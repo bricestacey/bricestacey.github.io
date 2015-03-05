@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>SQL to Generate User Lists in Voyager, Drupal, and ILLiad</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>SQL to Generate User Lists in Voyager, Drupal, and ILLiad</h1>
+
+<p>Today, we need reports of all active users for our applications. Here, I whip up SQL to retrieve this data in Voyager, Drupal, and ILLiad.</p>
+
+<p>I find most interesting that each application has a unique approach to staff accounts. Both Voyager and ILLiad have a distinct table for its patrons and staff. Drupal makes no distinction. This makes sense in terms of design intentions. Voyager and ILLiad are products with an obvious distinction between customer and employee. Drupal can implement the same effect, but comes as a more generic tool.</p>
+
+<p>My least favorite name for a staff account is Voyager's use of "operator". It sounds as if we should be handling heavy equipment.</p>
+
+<h2>Voyager Operators</h2>
+
+<p>This will list all the operators with their assigned circulation, acquisitions, and cataloging profile. Notice I use left joins in order to be sure all operators appear whether or not they happen to have profiles for any of the three modules.</p>
+
+<pre><code>SELECT
+  first_name
+, last_name
+, circ_profile_name
+, acq_profile_name
+, cat_profile_name
+FROM
+  operator
+  left join circ_operator using(operator_id)
+  left join circ_profile using(circ_profile_id)
+  left join acq_operator using(operator_id)
+  left join acq_profile using(acq_profile_id)
+  left join cat_operator using(operator_id)
+  left join cat_profile using(cat_profile_id)
+ORDER BY
+  2, 1 ASC
+</code></pre>
+
+<h2>Drupal Users</h2>
+
+<p>Drupal users can have multiple roles. Thus, I grouped by username and then concatenated all the roles with a comma. If you have more structured roles (e.g. if their permissions could be isolated to particular modules like the Circ, Acq, and Cat modules in Voyager), you could make this more elegant. We don't do such things in Drupal, so I don't bother.</p>
+
+<pre><code>SELECT 
+  users.name as Username
+, group_concat(role.name ORDER BY role.name ASC SEPARATOR ", ") as Roles
+FROM
+  users
+  LEFT JOIN users_roles USING(uid)
+  LEFT JOIN role USING(rid)
+WHERE
+  status &gt; 0
+GROUP BY
+  uid
+ORDER BY
+  users.name ASC
+LIMIT 0, 500
+</code></pre>
+
+<h2>ILLiad Staff</h2>
+
+<p>Lastly, the ILLiad staff accounts. Simple and easy.</p>
+
+<pre><code>SELECT 
+  dbo_Staff.Username
+, dbo_Staff.StaffFirstName
+, dbo_Staff.StaffLastName
+, dbo_Staff.UserGroup
+FROM 
+  dbo_Staff;
+</code></pre>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

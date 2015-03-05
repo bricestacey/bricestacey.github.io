@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Single Sign-On Authentication Using EZProxy UserObjects</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Single Sign-On Authentication Using EZProxy UserObjects</h1>
+
+<p>Spurred by OCLC's development for WorldCat Local, version 5.1c of EZProxy introduced a new feature called UserObjects. Think of UserObjects as an entity that represents an active session within EZProxy. With some initial configurations and a carefully crafted URL, any 3rd party service can use EZProxy as a means of authentication whereby a library could potentially use EZProxy as a single sign-on service for all library products.</p>
+
+<h2>Setting Up EZProxy's config.txt</h2>
+
+<p>First and foremost, a couple settings must be made in the config.txt file. To enable UserObjects, include the following.</p>
+
+<pre><code>Option UserObject
+Option UserObjectTestMode
+LocalWSKey JHjkh234jkh423jkh423jkhjk423hjk423hjkh423jkhK23JHK423JKH4JK23HJK423HJK423HJK423H
+RedirectSafe ezproxy.example.com
+RedirectSafe www.example.com
+</code></pre>
+
+<p>The UserObject option enables UserObjects. By default, EZProxy does not provide an interface to easily see the contents of a UserObject. By enabling UserObjectTestMode, you can visit http://ezproxy.example.com/userObject?service=getToken to login and see the UserObject for current user. Once you're done testing, you can remove this, but other steps must be completed first (see: writing a 3rd party application to process EZProxy UserObjects).</p>
+
+<p>The WSKey is a secret key and will be required by 3rd parties to retrieve the actual contents of a given UserObject. More on that later.</p>
+
+<p>You will need to set a RedirectSafe for each hostname that EZProxy automatically redirects users to. You must include the hostname of your EZProxy instance and you will need to include the hostname of the site using EZProxy to authenticate.</p>
+
+<h2>Setting Up EZProxy's user.txt</h2>
+
+<p>You also need to modify your user.txt file to populate the <em>session</em> namespace with data to appear in the UserObject. There are many ways to do this depending on your authentication scheme. I have already outlined in detail how I configured the user.txt for UMass Boston using <a href="/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator.html">SIP</a>. OCLC also has some <a href="http://wcn.oclc.org/index.php/EZProxy_Configuration_for_use_with_Navigator" title="">documentation</a> included in their wiki on WorldCat Navigator.</p>
+
+<p>If you don't already have an authentication scheme configured that populates the session namespace, I suggest using the following for test purposes (copied from OCLC):</p>
+
+<pre><code>If login:user eq "BXL01PAT" &amp;&amp; login:pass eq "patron" {
+   Set session:uid="BXL01PAT"
+   Set session:forename="Patron"
+   Set session:surname="Boston College Law Library"
+   Set session:emailAddress=patron@college.edu
+   Set session:location="BXL"
+   Set session:category=PATRO
+   Set session:joinDate=06-09-2009
+   Set session:expiryDate=06-09-2010
+   Set session:bannedInRemoteCirculation="N"
+   Accept
+   Stop
+}
+</code></pre>
+
+<p>The provided variables would appear in the UserObject for the user <code>BXL01PAT</code> with a password of <code>patron</code>.</p>
+
+<h2>Writing URLs to Use EZProxy as a point of Authentication</h2>
+
+<p>First and foremost, any application wishing to use EZProxy UserObjects as a method of authentication will need to be configured to support them. In almost all cases, a custom application will need to be written. I don't know of anyone supporting EZProxy natively, nor anyone really trying to do anything similar.</p>
+
+<p>First, you must create a URL to initiate authentication. The URL looks like so:</p>
+
+<pre><code>https://login.ezproxy.example.com/login?renew=true&amp;amp;url=https://login.ezproxy.example.com/userObject?service=getToken&amp;amp;returnURL=http://www.example.com/ezproxy.php
+</code></pre>
+
+<p>The URL contains the following parameters:</p>
+
+<ul>
+<li>renew (optional) - If this parameter exists, EZProxy will require the user to login again regardless of an existing session. If this parameter does not exist, EZProxy will reuse an existing session (stored via a cookie). Let me emphasize it again, you cannot disable disable this by setting the value to 0, false, null, or any other value that represent a disabled state. You must simply omit it as a parameter.</li>
+<li>url (required) - This should be set to https://login.ezproxy.example.com/userObject?service=getToken where ezproxy.example.com is your EZProxy istance. In my case, our EZProxy SSL Certificate is a wildcard for .ezproxy.example.com. Therefore, it's important that I include the subdomain login in order to prevent browser warnings.</li>
+<li>returnURL - This the URL where the user will be redirected if authentication is successful. The UserObject ticket hash is passed to this page via a <code>ticket</code> URL parameter. This page should contain logic to store the ticket, retrieve UserObject data via EZProxy's REST API, and perform necessary operations to validate the user for the given application.</li>
+</ul>
+
+
+<h2>Accessing UserObject Data via EZProxy's REST API</h2>
+
+<p>EZProxy provides a secure REST API to access a UserObject's data. You'll notice that I am using the same wskey included in my config.txt I mentioned earlier. This is important, otherwise EZProxy will deny your request. cURL by default fails if it receives any browser warnings. To avoid this, I turn off CURLOPT_SSL_VERIFYPEER.</p>
+
+<p>This script simply retrieves the UserObject and prints it on the screen.</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span>
+  <span class="nv">$wskey</span> <span class="o">=</span> <span class="s1">&#39;JHjkh234jkh423jkh423jkhjk423hjk423hjkh423jkhK23JHK423JKH4JK23HJK423HJK423HJK423H&#39;</span><span class="p">;</span>
+  <span class="nv">$url</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;token&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s1">&#39;&amp;service=getUserObject&amp;wskey=&#39;</span> <span class="o">.</span> <span class="nv">$wskey</span><span class="p">;</span>
+  <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
+  <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$url</span><span class="p">);</span>
+  <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+
+  <span class="nv">$o</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+  <span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+  <span class="k">print</span> <span class="nv">$o</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</code></pre>
+</div>
+
+
+<p>If you were writing an actual authentication extension to an existing product, I would need to use whatever APIs that application provided to create a valid session and populate it with data from the UserObject. This is nothing novel and is exactly the same process required when writing for instance an LDAP extension to an existing product.</p>
+
+<h2>So What's the Big Idea?</h2>
+
+<p>EZProxy is already a powerful tool for libraries. It's a simple tool for allowing off-campus users access to licensed materials. With UserObjects, EZProxy becomes even more powerful and creates the opportunity of using EZProxy as a single sign-on for all library products. This would dramatically simplify the user experience of a library's electronic services which are often fragmented.</p>
+
+<p>My future plans include supporting EZProxy authentication in Drupal and ILLiad. If you are interested in helping with development, please let me know. I'd love to chat.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

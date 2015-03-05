@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>How Voyager libraries using SIP can configure a short and long loan period for WorldCat Navigator</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>How Voyager libraries using SIP can configure a short and long loan period for WorldCat Navigator</h1>
+
+<p>The Boston Library Consortium currently uses WorldCat Local / Navigator to manage consortial borrowing. This article will describe how Voyager libraries can implement both long and short loan periods using SIP [<a href="#1">1</a>]. I recommend that you download the manual <em>Interface to Self Check Modules Using 3M SIP</em> for a more detailed guide [<a href="#2">2</a>]. Follow along in the the chapter Setting Up SIP Self Check - System Administration Setup.</p>
+
+<p>When checking out books in Voyager with SIP, just like when using the Circulation Module, the specific circulation policy used is determined by the combination of item type and patron group at time of the transaction. Voyager does not support arbitrary due dates [<a href="#3">3</a>][<a href="#4">4</a>].  Therefore, in order to implement a long and short loan period we will need two item types [<a href="#5">5</a>] and the particular item type will need to be assigned at the point an item is created.</p>
+
+<p>Items are created using the <strong>Create Bib Record Request</strong> [<a href="#6">6</a>], a Voyager-only extension to SIP that creates a Bib / MFHD / Item trio. Looking at the specifications for that message (Appendix B-24), you'll notice that there is no field to specify an item's item type. Instead, the item type is determined by the <strong>Default Item Type</strong> of the location your SIP operator uses to sign in [<a href="#7">7</a>]. Prior to using SIP, you must sign in using the SIP operator's username, password, and also choose a location just as you would when using any Voyager module. So, let's delve into how we might go about getting it all to work together.</p>
+
+<h2>Create SIP Circulation Security Policy</h2>
+
+<p><em>Skip this section if you already have a SIP circulation policy. If you are currently borrowing with integrated circulation, this is most likely already done.</em></p>
+
+<p>Circulation Security Policies determine what circulation tasks operators are allowed to perform.</p>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Security > Circulation Profiles.</li>
+<li>Click New.</li>
+<li>Enter a name. Example: SIP for WorldCat Local.</li>
+<li>Click the Profiles tab.</li>
+<li>Tick Charge/Renew, Discharge, Add/Update Recall/Hold Requests, Mask Patron Social Security Number, View-Only Patorn Records.</li>
+<li>Click save.</li>
+</ol>
+
+
+<h2>Create SIP Operator Profile</h2>
+
+<p><em>Skip this section if you already have a working SIP operator. If you are currently borrowing with integrated circulation, this is most likely already done.</em></p>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Security > Operator Profiles.</li>
+<li>Click New Give the operator a first and last name, username, and password.</li>
+<li>Click Save.</li>
+</ol>
+
+
+<h2>Assign SIP Operator to Circulation Security Policy</h2>
+
+<p><em>Skip this section if you already have a working SIP operator. If you are currently borrowing with integrated circulation, this is most likely done.</em></p>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Security > Circulation Profiles.</li>
+<li>Select the SIP Circulation Security Policy created in the previous section and click edit.</li>
+<li>Click the Operator tab.</li>
+<li>Select the appropriate SIP operator from the list of Available Operators and click the single right arrow button to move it into the list of Selected Operators.</li>
+<li>Click Save.</li>
+</ol>
+
+
+<h2>Create SIP Location</h2>
+
+<p><em>If you are currently borrowing with integrated circulation, you will only need to create one additional location for short loans.</em></p>
+
+<p>Since a location can only have one Default Item Type, you will require a location for each separate item type you wish to have created using SIP.</p>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to System > Locations.</li>
+<li>Click New.</li>
+<li>Enter a code (e.g. NRESHORT), name (e.g. SIP NRE Short Loan), spine label name (I'm not sure if this is ever used), and a long descriptive name at OPAC Display Name (e.g. SIP location to implement NRE short loan periods). The manual states it does not matter what you choose for Suppress in OPAC so I recommend leaving it unchecked.</li>
+<li>Click Save.</li>
+</ol>
+
+
+<h2>Assign SIP Location to Circulation Security Policy</h2>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Security > Circulation Profiles.</li>
+<li>Select the SIP Circulation Security Policy created in the section "Create SIP Circulation Security Policy" or that already exists and click edit.</li>
+<li>Click the Locations tab.</li>
+<li>Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.</li>
+<li>Click Save.</li>
+</ol>
+
+
+<h3>Assign SIP Location to a Master Security Policy</h3>
+
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Security > Master Profiles.</li>
+<li>Select the Master Security Profiles you wish to be allowed to authorize the SIP location and click edit. At the very least, the Master Profile your operator is a member of will need to have the SIP location added.</li>
+<li>Click the Locations tab.</li>
+<li>Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.</li>
+<li>Click Save.</li>
+</ol>
+
+
+<h2>Assign SIP Location to a Circulation Policy</h2>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Circulation > Policy Definitions.</li>
+<li>Select a Circulation Policy and click Edit.</li>
+<li>Click the Locations tab.</li>
+<li>Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.</li>
+</ol>
+
+
+<h2>Change the Default Item Type and Default Location of a SIP Location</h2>
+
+<ol>
+<li>Open the SysAdmin module.</li>
+<li>Go to Circulation > Policy Definitions.</li>
+<li>Select a Circulation Policy and click Edit.</li>
+<li>Click the Locations tab.</li>
+<li>Select the SIP location in the Selected Locations list and click Settings....</li>
+<li>Set the Default Item Type appropriately. For example, if this location will be used for the short location, be sure to set the default item type to the item type used for short loan durations.</li>
+<li>Set the Default Location to the default location you want items to have. If you do not track the transit of items from processing to the hold shelf, I suggest indicating the pickup location. However, if you track the transit of items from processing to pickup, you might want to set the Default Location to where you process arriving books.</li>
+<li>Check Circulation Location.</li>
+<li>Check Courtesy Discharge.</li>
+</ol>
+
+
+<p>At this point, you should be ready to go. You should contact OCLC with the new SIP location code and they'll run you through some tests to be sure it all works. <a href="#8">8</a></p>
+
+<h2>Further Reading</h2>
+
+<ul>
+<li>SIP Specs - <a href="http://multimedia.3m.com/mws/mediawebserver?mwsId=SSSSSu7zK1fslxtUm8_9m82Uev7qe17zHvTSevTSeSSSSSS--">http://multimedia.3m.com/mws/mediawebserver?mwsId=SSSSSu7zK1fslxtUm8_9m82Uev7qe17zHvTSevTSeSSSSSS--</a></li>
+<li>PHP-SIP Client - <a href="http://github.com/bricestacey/php-sip">http://github.com/bricestacey/php-sip</a></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<p><a name="1"></a>#1. OCLC's original idea was to append the due date to the title and let each library manually process each book. NRE is considered the bleeding edge of delivery tools in libraries, yet appending due dates to titles seems like such an antiquated solution. Libraries need to figure out technology sooner or later or else they're going to be suckered into such costly, mediocre solutions.</p>
+
+<p><a name="2"></a>#2. You can find it on the Doc Portal under User Guides > Voyager Extension Modules User Guides > Interface to Self Check Modules Using 3M SIP. There you will find two PDFs:</p>
+
+<ul>
+<li>SelfCheck 7.1.pdf (this is for Voyager 7.1)</li>
+<li>V_InterfaceToSelfCheckModulesUsing3MSIP_20091119.pdf (this is for Voyager 7.2)</li>
+</ul>
+
+
+<p><a name="3"></a>#3. I understand you can set an arbitrary due date using the Circulation Module. After charging an item, right click on it and select Modify Due Date.</p>
+
+<p><a name="4"></a>#4. The official 3M SIP protocol supports check out requests with specific due dates, but Voyager's implementation of it does not. With the standard 3M spec, you could set the No Block fixed-field to Y and then set the NB Due Date to the desired due date. However, this seems to be intended so that self checkout machines can continue to operate while offline using some default value and be able to synchronize with the server once it's back online. Next time you choose an ILS, I might suggest choosing one that is committed to fully supporting protocols or you will continue to implement such ugly hacks as I describe in this article.</p>
+
+<p><a name="5"></a>#5. I would suggest a highly descriptive item type. For example NRELONG, NRESHORT so that there is little confusion.</p>
+
+<p><a name="6"></a>#6. A Create Bib Request might look something like this:</p>
+
+<p><code>8120100813    133505AO|MFSelfchk|AJThe transformation of learning : / |AB77087|AC|</code></p>
+
+<p>This will create an item with the title "The transformation of learning" and an item with barcode 77087. The SIP server might then respond with</p>
+
+<p><code>821MJ633124|MA630995|AFCreate Bib successful.|</code></p>
+
+<p>Not so scary looking is it?</p>
+
+<p><a name="7"></a>#7.  This is a login message</p>
+
+<p><code>9300CNusername|COpassword|CPlocation|</code></p>
+
+<p>And a successful response.</p>
+
+<p><code>941</code></p>
+
+<p><a name="8"></a>#8. This article was written after configuring UMass Boston's server and I have not vetted these instructions with another library. So, these instructions may be insufficient, inaccurate, or otherwise useless. Please let me know if there are any mistakes and I'll happily correct them. if they work, please let me know so I can remove this warning.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Circulation Counts for Unique Patrons On Any Given Day</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Circulation Counts for Unique Patrons On Any Given Day</h1>
+
+<p>There was a request today for a Voyager report on a listserv. Here it is.</p>
+
+<blockquote><p>I'm trying to compare library usage from Fall 08 semester to Fall 09 semeseter.  One of the things I'd like to do is show how many patrons checked items out of the library during that time period.</p>
+
+<ul>
+<li>If the same patron checked items out on 5 DIFFERENT days during the month of January, I'd like to count that patron 5 times.</li>
+<li>If the same patron checked out multiple items on the SAME day, I'd like to count that patron once for that day.</li>
+</ul>
+
+
+<p>Does anyone have an access report that they use to show circulation usage that they could share?</p></blockquote>
+
+<p>I whipped up a quick report, but it doesn't run in MS Access. Instead, you must use sqlplus or any other Oracle driver.</p>
+
+<pre><code>-- This report gives a count of the number of patrons initiating transactions
+-- each day. This is a good measurement of the number of unique patrons
+-- circulating items rather than a raw circulation count.
+
+------------------------------------------------------------------------------
+-- Date Grouping
+-- Note: only one of these variables should be uncommented.
+--DEFINE _GROUP_DATES = 'YYYY-MM-DD' -- Group by day
+--DEFINE _GROUP_DATES = 'YYYY-MM'    -- Group by month
+DEFINE _GROUP_DATES = 'YYYY'       -- Group by year
+
+------------------------------------------------------------------------------
+-- Date range. 
+-- Note: that dates default to a time of 00:00:00 (midnight). So you should 
+-- probably add one to your end date.
+DEFINE _DATE_BEGIN  = '01-JAN-08' -- DD-MON-YY
+DEFINE _DATE_END    = '01-JAN-09' -- DD-MON-YY
+
+SELECT
+  count(patron_id) as "Count"
+, charge_date as "Date"
+FROM 
+  (SELECT UNIQUE
+    patron_id
+  , to_char(to_date(charge_date, 'YYYY-MM-DD'), '&amp;_GROUP_DATES') as charge_date
+  FROM
+  ((SELECT UNIQUE 
+      patron_id
+    , to_char(charge_date, 'YYYY-MM-DD') as charge_date
+    FROM
+      circ_trans_archive
+    WHERE
+      charge_date between '&amp;_DATE_BEGIN' and '&amp;_DATE_END')
+   union
+   (SELECT UNIQUE 
+      patron_id
+    , to_char(charge_date, 'YYYY-MM-DD') as charge_date 
+    FROM
+      circ_transactions
+    WHERE 
+      charge_date between '&amp;_DATE_BEGIN' and '&amp;_DATE_END'))
+  )
+GROUP BY
+  charge_date
+ORDER BY
+  2;
+
+UNDEF _GROUP_DATES
+UNDEF _DATE_BEGIN
+UNDEF _DATE_END
+</code></pre>
+
+<p>The general idea is to union the active transactions with the archived transactions. We also convert the charge date to a string of only its date (no time). This will allow the unique operation to remove duplicate patrons on any given day. We can then group by year, month, or date as configured.</p>
+
+<p>Here is some sample output:</p>
+
+<p>By date:</p>
+
+<pre><code>     Count Date
+---------- ----------
+       232 2008-12-01
+       237 2008-12-02
+       242 2008-12-03
+       233 2008-12-04
+       144 2008-12-05
+        41 2008-12-06
+        17 2008-12-07
+       222 2008-12-08
+       248 2008-12-09
+       242 2008-12-10
+       247 2008-12-11
+       134 2008-12-12
+        27 2008-12-13
+        27 2008-12-14
+       156 2008-12-15
+       146 2008-12-16
+       128 2008-12-17
+       113 2008-12-18
+         1 2008-12-19
+         5 2008-12-20
+        20 2008-12-22
+        22 2008-12-23
+        13 2008-12-24
+         7 2008-12-26
+        28 2008-12-29
+        27 2008-12-30
+         8 2008-12-31
+</code></pre>
+
+<p>By month:</p>
+
+<pre><code>     Count Date
+---------- -------
+       747 2008-01
+      1856 2008-02
+      1704 2008-03
+      1821 2008-04
+      1510 2008-05
+       510 2008-06
+       554 2008-07
+       419 2008-08
+      2045 2008-09
+      2049 2008-10
+      1829 2008-11
+      1636 2008-12
+</code></pre>
+
+<p>By year:</p>
+
+<pre><code>     Count Date
+---------- ----
+      6702 2008
+</code></pre>
+
+<p>Please note that this report only works if you have elected to retain patron ids for circulation history. This is an option in the module SysAdmin > System > "Retain patron id for circ history".</p>
+
+<p>I've done my best to make the report easy to modify by using variables instead of embedding magic numbers.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

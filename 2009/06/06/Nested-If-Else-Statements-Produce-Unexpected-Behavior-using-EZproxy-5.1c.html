@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Nested If/Else Statements Produce Unexpected Behavior using EZproxy 5.1c</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Nested If/Else Statements Produce Unexpected Behavior using EZproxy 5.1c</h1>
+
+<p>I was touching up our EZproxy user authentication and I ran into a problem using If/Else clauses. Essentially, If/Else clauses do not nest properly. Here is an example:</p>
+
+<pre><code>::Common
+if (0 == 1) {
+  msg "0 == 1 TRUE"
+  if (1 == 1) {
+    msg "Inner IF"
+  } else {
+    msg "Inner ELSE"
+  }
+} else {
+  msg "1 == 1 FALSE"
+}
+/Common
+</code></pre>
+
+<p>Once executed, I would expect "1 == 1 FALSE" to be output. Here is what I get:</p>
+
+<pre><code>"Inner ELSE"
+"1 == 1 FALSE"
+</code></pre>
+
+<p>I don't exactly know what is going on. From my experiences writing programs that parse highly generic text structures (exercises 1-23 and 1-24 from the K&amp;R come to mind), I'd just like with wish the debugger good luck. And for any developer out there wishing to write your own language and interpreter to embed in your product, don't do it. Instead, use an existing language with all its libraries removed.</p>
+
+<p>Luckily, this can be avoided by rewriting nested If/Else statements as two If statements, one true and the other false. Here is an example:</p>
+
+<pre><code>::Common
+if (0 == 1) {
+  msg "0 == 1 TRUE"
+  if (1 == 1) {
+    msg "Inner IF"
+  }
+  if (1 != 1) {
+    msg "Inner ELSE"
+  }
+} else {
+  msg "1 == 1 FALSE"
+}
+/Common
+</code></pre>
+
+<p>This gives the appropriate output:</p>
+
+<pre><code>"1 == 1 FALSE"
+</code></pre>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

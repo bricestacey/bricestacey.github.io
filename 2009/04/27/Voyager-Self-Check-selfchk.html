@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Voyager Self Check (selfchk)</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Voyager Self Check (selfchk)</h1>
+
+<p>My workplace, the Joseph P. Healey Library, uses Ex Libris' Voyager ILS. The normal interface for the Circulation module is through a graphical user interface (GUI), which I believe is of great use for staff to circulate materials. It makes it convenient for a human to perform complicated tasks. However, what if I were developing an application that performs Circulation tasks (charge, renew, discharge, collect fees, etc) and wanted to perform those tasks programmatically?</p>
+
+<p>Luckily, Voyager has an additional module called SIP Self Check, sometimes referred to as selfchk, which allows one to programmatically interface with the Circulation module.</p>
+
+<h2>Standard Interchange Protocol (SIP)</h2>
+
+<p>SIP Self Check implements 3M's Standard Interchange Protocol (SIP). The protocol describes a set of message pairs that form the dialogue between server and client. For each command issued by the client, it will receive its corresponding response. My understanding is that SIP was designed with automated circulation systems in mind. You know the self-checkout at your local grocery store? Imagine that in a library. SIP would be the messages flying from the self-checkout machines to the ILS' circulation server.</p>
+
+<p>However, my limited exposure to SIP has been exclusively in the domain of resource sharing. For example, the Healey Library is a member of both the Boston Library Consortium Virtual Catalog and Massachusetts Virtual Catalog. Both virtual catalogs are implementations of SyrsiDynix's URSA resource-sharing solution, which allows patrons to borrow books from any of the member libraries within each catalog. The catalogs use SIP to hook into each library system to determine an item's availability and to place a hold on the item. At that point the automation is over and staff must retrieve and process the book as usual. We are actually in the process of replacing the BLC Virtual Catalog with WorldCat Navigator, another resource-sharing solution that supports additional protocols such as NICP or INN-Reach, which will allow for greater participation among libraries which may not support SIP.</p>
+
+<h2>Why I Want a Programmable Interface</h2>
+
+<p>If you're like me, you're probably a member of dozens of networks and online services, but I'm sure you spend most of your time in only just a few. So take for instance when you need to renew a library book. There is often a large amount of friction to leave GMail, Facebook, Twitter, Hacker News, World of Warcraft or wherever you spend your time and venture into a rarely used service. What can we do to reduce this friction? Develop tools that can be deployed within these other, more favored networks.</p>
+
+<p>The important takeaway is that SIP (and other protocols) essentially allows a machine to perform just about any task the gal at the circulation desk is doing, but instantaneously, from anywhere, through any imaginable interface. If that doesn't tickle your fantasies, here are some examples:</p>
+
+<ul>
+<li>Portable barcode scanners that connect wirelessly to the internet that can charge or discharge books from anywhere in real-time. Staff that are stuck standing at the same terminal with the same truck of books would rejoice in the greater freedom.</li>
+<li>Libraries could mimic Apple's retail stores and allow circulation staff to roam freely. This may be popular for locations where having an entire desktop is difficult.</li>
+<li>Automatic entrance gates with card swipes that open only if you're an active patron.</li>
+<li>View your account status, renew items, and place holds via phone, sms, facebook, twitter, or any other platform a developer can work with. Yeah, I said twitter! Just tweet "@HealeyLibrary renew:987654321" and you've got the book for another two weeks!</li>
+<li>Services that allow for a 3rd party to authenticate users (e.g. that support authentication via LDAP, POP, IMAP, etc) could develop support for SIP, allowing real-time access to your ILS's patron database.</li>
+<li>Pay fines and fees online securely with a credit card, Paypal, a community time bank, or even Second Life's Linden Dollars.</li>
+</ul>
+
+
+<p>And that's just the tip of the iceberg.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

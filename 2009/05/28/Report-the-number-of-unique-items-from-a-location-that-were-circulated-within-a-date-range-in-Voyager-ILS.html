@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Report the number of unique items from a location that were circulated within a date range in Voyager ILS</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Report the number of unique items from a location that were circulated within a date range in Voyager ILS</h1>
+
+<p>It's that time of year again for annual reports. Some of the numbers I'm asked to dig up aren't easily available. So, I'm writing up this short guide to make it easier for you.</p>
+
+<p>I was recently asked for the number of unique books from our main stacks that have circulated for the past fiscal year. We use Voyager as our ILS and there are no reports that include such a value. I decided that I would have to write my own SQL query to dig it up. I will be using SQL*Plus, which is the command line tool for accessing the Oracle database. Please note that the SQL provided is not compatible with MS Access (traditional means of generating reports from Voyager). If you intend to use MS Access you will need to modify the SQL as necessary.</p>
+
+<h2>Accessing SQL*Plus</h2>
+
+<p>You can run SQL*Plus by typing <code>sqlplus</code> into the command line. You will be prompted for a username and password. Once logged in, you will see a <code>SQL&gt;</code> prompt. From there you can enter any SQL statement you like. If you have a collection of SQL statements in a file, you can execute them with <code>@file</code> where file is the name of a .sql file in your working directory (e.g. itemcounts.sql can be executed with @itemcounts). The default settings for SQL*Plus are difficult to work with. I advise issuing the following commands once logged in.</p>
+
+<pre><code>set linesize 150
+set pagesize 50
+</code></pre>
+
+<p>If you don't want to type this in each time you use SQL*Plus, you can add them to <em>$ORACLE_HOME/sqlplus/admin/glogin.sql</em>. This file may be in a different location depending on your operating system and version of Oracle (I am using SunOS 5. 9 and Oracle 10g).</p>
+
+<h2>Determining your Item Type and Location</h2>
+
+<p>The SQL statement will prompt you for a <code>start date</code>, <code>end date</code>, <code>item type</code> and <code>location code</code>. The dates should be given in the format YYYYMMDD (i.e. May 28, 2009 would be 20090528). If you have trouble determining a particular code, you can view them all in the Voyager System Administration module under <em>System -> Locations</em> or <em>System -> Item Types</em>.</p>
+
+<h2>The SQL Statement</h2>
+
+<p>Circulation transactions are spread out between two tables: Circ_Transactions and Circ_Trans_Archive. This query finds the count of distinct item_id's from each table given an item type and location. The results are then combined by a union and summed to provide the final result.</p>
+
+<pre><code>SELECT SUM(count) FROM
+-- Circ_Transactions
+(SELECT Count(Distinct(t.Item_ID)) count
+FROM Circ_Transactions t, Item i
+WHERE t.Item_ID = i.Item_ID AND
+  -- Start Date
+  t.Charge_Date &gt;= to_date('&amp;&amp;START_DATE_YYYYMMDD 00:00:00', 'YYYYMMDD HH24:MI:SS') AND
+  -- End Date
+  t.Charge_Date &lt;= to_date('&amp;&amp;END_DATE_YYYYMMDD 23:59:59', 'YYYYMMDD HH24:MI:SS') AND
+  -- Item Type. Subquery converts given code to id.
+  ((i.Temp_Item_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;&amp;ITEM_TYPE_CODE'))) OR (i.Temp_Item_Type_ID = 0 AND i.Ite
+m_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;&amp;ITEM_TYPE_CODE')))) AND -- Item Type
+  -- Location. Subquery converts given code to id.
+  ((i.Temp_Location = (SELECT Location_ID FROM Location WHERE upper(Location_Code) = upper('&amp;&amp;LOCATION_CODE'))) OR
+   (i.Temp_Location = 0 AND i.Perm_Location = (SELECT Location_ID FROM location WHERE upper(Location_Code) = upper('&amp;&amp;LOCATION_CODE'))))
+UNION
+-- Circ_Trans_Archive
+SELECT Count(Distinct(t.Item_ID)) count
+FROM Circ_Trans_Archive t, Item i
+WHERE t.Item_ID = i.Item_ID AND
+  -- Start Date
+  t.Charge_Date &gt;= to_date('&amp;&amp;START_DATE_YYYYMMDD 00:00:00', 'YYYYMMDD HH24:MI:SS') AND
+  -- End Date
+  t.Charge_Date &lt;= to_date('&amp;&amp;END_DATE_YYYYMMDD 23:59:59', 'YYYYMMDD HH24:MI:SS') AND
+  -- Item Type. Subquery converts given code to id.
+  ((i.Temp_Item_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;&amp;ITEM_TYPE_CODE'))) OR (i.Temp_Item_Type_ID = 0 AND i.Ite
+m_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;&amp;ITEM_TYPE_CODE')))) AND -- Item Type
+  -- Location. Subquery converts given code to id.
+  ((i.Temp_Location = (SELECT Location_ID FROM Location WHERE upper(Location_Code) = upper('&amp;&amp;LOCATION_CODE'))) OR
+   (i.Temp_Location = 0 AND i.Perm_Location = (SELECT Location_ID FROM location WHERE upper(Location_Code) = upper('&amp;&amp;LOCATION_CODE')))));
+  UNDEF LOCATION_CODE;
+  UNDEF ITEM_TYPE_CODE;
+  UNDEF START_DATE_YYYYMMDD;
+  UNDEF END_DATE_YYYYMMDD;
+</code></pre>
+
+<p>Cheers!</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Converting from Event module to CCK Date</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Converting from Event module to CCK Date</h1>
+
+<p>I've been preparing the Healey Library's website to be upgraded to Drupal 6. That includes getting each module up to date, but in some cases it means finding a replacement. The <a href="http://drupal.org/project/event">Event</a> module has been one of those modules that came to a screeching halt following the release of Drupal 6. Luckily, <a href="http://drupal.org/project/date">Date</a> is far superior and easily fills its place.</p>
+
+<p>I have only created a single Event content type, ironically called <em>event</em>. For this content type, I created a <em>new CCK Date field</em> called <em>eventdate</em>. When configuring this field, I enabled an <em>Optional To Date</em>. Next, I ran a short script that would <em>transfer existing Event Module data into our new field</em>. You should use the <a href="http://drupal.org/project/devel">Devel Module</a> to execute this PHP. Please note: You will need to change the timezone to reflect your implementation.</p>
+
+<pre><code>&lt;?php
+// Iterate through each event.
+$result = db_query("SELECT * FROM {event}");
+while ($event = db_fetch_array($result)){
+  // Transform the date information
+  // CCK date format: Y-m-d\TH:i:s
+  // Event date format: unix timestamp
+  $startdate = date('Y-m-d\TH:i:s', $event['event_start']);
+  $enddate = date('Y-m-d\TH:i:s', $event['event_end']);
+  $nid = $event['nid'];
+
+  // Load the node corresponding to the event
+  $node = node_load(array('nid' =&gt; $nid));
+
+  $node-&gt;field_eventdate[0]['value'] = $startdate;
+  $node-&gt;field_eventdate[0]['value2'] = $enddate;
+  $node-&gt;field_eventdate[0]['timezone'] = 'America/New_York';
+  $node-&gt;field_eventdate[0]['timezone_db'] = 'America/New_York';
+  $node-&gt;field_eventdate[0]['date_type'] = 'Date';
+
+  // Save the modified node
+  node_save($node);
+}
+?&gt;
+</code></pre>
+
+<p>Now, we can disable and uninstall the Event module. Then, create a new content type with the same original machine readable name as your original event node (in my case, event). Then you're done!</p>
+
+<p>You will undoubtedly need to make changes throughout the rest of your site, particularly modifying any views and themes that used the original event data structures.</p>
+
+<p>For the record, at the time of this writing I was running Event 5.x-1.0 and Date 5.x-2.8.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

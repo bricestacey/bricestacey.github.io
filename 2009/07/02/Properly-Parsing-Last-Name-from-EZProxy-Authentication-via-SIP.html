@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Properly Parsing Last Name from EZProxy Authentication via SIP</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Properly Parsing Last Name from EZProxy Authentication via SIP</h1>
+
+<p>We authenticate users by their library barcode and their last name. Our <a href="/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator.html">EZProxy user authentication</a> uses <a href="/2009/04/27/Voyager-Self-Check-selfchk.html">SIP</a> to determine if a given user is valid or not. Unfortunately, Voyager's implementation of SIP does not return a patron's last name as a discrete variable. Instead, it returns the patron's full name as a single string.</p>
+
+<p>At first, we didn't have any problems. EZProxy provides a function <a href="http://www.oclc.org/support/documentation/ezproxy/expressions/">ParseName()</a> that will split a given name into its parts. We used a check that looks like this:</p>
+
+<pre><code>Set ParseName(auth:AE, "FMS", "login")
+If Upper(login:pass) ne Upper(login:surname) {
+  Deny loginbu.htm
+}
+</code></pre>
+
+<p>This works as expected for most users, however users with a last name that contained a space and did not have a middle initial were being denied. For these users, the first word in their last name was being parsed as their middle initial. As a temporary fix, I just gave the user a middle initial. But there's more you can do.</p>
+
+<p>The simple solution is to concatenate the middle and last names prior to the check and use the <a href="http://www.oclc.org/support/documentation/ezproxy/expressions/">AnyWild()</a> function to be sure the given password is found in the concatenated string. This looks like so:</p>
+
+<pre><code>Set ParseName(auth:AE, "FMS", "login")
+Set passCheck = login:middleName . login:surname
+If !AnyWild(passCheck, "*" . login:pass) {
+  Deny loginbu.htm
+}
+</code></pre>
+
+<p>This appears to work, but isn't exactly secure. A patron only requires to provide at minimum the last character of their last name. They could of course add more characters. As an example, my last name is Stacey. I could log in using the following passwords: <code>y</code>, <code>ey</code>, <code>cey</code>, <code>acey</code>, <code>tacey</code>, or <code>stacey</code>. I could even keep going to include my middle initial. This opens a security risk, a user need only try all 26 letters and would have access to millions of dollars of licensed materials. I don't care, but I'm sure EBSCO does. Luckily, we can do better.</p>
+
+<p>We tighten the check by also ensuring that the provided password <em>at the very least</em> matches the last name determined by the <a href="http://www.oclc.org/support/documentation/ezproxy/expressions/">ParseName()</a> function. That looks like this:</p>
+
+<pre><code>Set ParseName(auth:AE, "FMS", "login")
+Set passCheck = login:middleName . login:surname
+If !AnyWild(login:pass, "*" . login:surname) || !AnyWild(passCheck, "*" . login:pass) {
+  Deny loginbu.htm
+}
+</code></pre>
+
+<p>At UMass Boston, we actually go one step further. We have had issues in the past concerning users with hyphens, spaces, and even apostrophes in last names. I do not know what was the limiting technology (whether it was EZProxy or how the data was queried from MS Access at the time), but we could not include these characters and they were replaced by spaces. This was very confusing for users to remember so I had written a javascript function that converted these characters for users on form submission. Now, EZProxy can do this for us. We simply eliminate all non letter characters like so:</p>
+
+<pre><code>Set ParseName(auth:AE, "FMS", "login")
+Set pass = REReplace("/[^a-zA-Z]/g", "", login:pass)
+Set lastCheck = REReplace("/[^a-zA-Z]/g", "", login:surname)
+Set passCheck = REReplace("/[^a-zA-Z]/g", "", login:middleName . login:surname)
+If !AnyWild(pass, "*" . lastCheck) || !AnyWild(passCheck, "*" . pass) {
+  Deny loginbu.htm
+}
+</code></pre>
+
+<p>Now, a patron with a space in their last name must enter <em>at least</em> all but the first word in their last name, but may also include that first word. This has the added "feature" that users with a single word for their last name may include their middle name as well. Most importantly, more users are logging in without any problems.</p>
+
+<p>User experience +1</p>
+
+<p><strong>*August 15, 2009* I've since used Faux PatronAPI to pull names from Voyager instead of relying on SIP.</strong></p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

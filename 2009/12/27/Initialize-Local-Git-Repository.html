@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Initialize Local Git Repository</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Initialize Local Git Repository</h1>
+
+<p>I am starting a new coding project, but I always have trouble remembering how to configure my initial Git repository. Most of the tutorials online assume you want to create a git repository out of a working directory. Since I am starting this project from scratch, I don't particularly like to do this. I prefer to create a bare repository to be the master copy, clone it in some working directory, and push any commits back to the master. Conceptually, this process is most congruent with what is going on in my mind. First, I build the box, then I fill it.</p>
+
+<p>First, create the Git repository:</p>
+
+<pre><code>mkdir ~/git/ezpc.git
+cd ~/git/ezpc.git
+git init --bare .
+</code></pre>
+
+<p>Then, clone it to a working directory:</p>
+
+<pre><code>mkdir ~/projects/ezpc
+cd ~/projects/ezpc
+git clone ~/git/ezpc.git/ .
+</code></pre>
+
+<p>Configure which repository you will push and pull to:</p>
+
+<pre><code>git remote rm origin
+git remote add origin ~/git/ezpc.git
+git push origin master
+</code></pre>
+
+<p>Then you can make your commits and just type <code>git push</code>.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

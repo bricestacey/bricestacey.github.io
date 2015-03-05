@@ -1,0 +1,1850 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Tom Preston-Werner</title>
+ <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
+ <link href="http://tom.preston-werner.com/"/>
+ <updated>2012-01-02T22:44:09-05:00</updated>
+ <id>http://tom.preston-werner.com/</id>
+ <author>
+   <name>Tom Preston-Werner</name>
+   <email>tom@mojombo.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>ruby-zoom port to 1.9.2</title>
+   <link href="http://tom.preston-werner.com/2011/08/25/ruby-zoom-port-to-1.9.2.html"/>
+   <updated>2011-08-25T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2011/08/25/ruby-zoom-port-to-1.9.2</id>
+   <content type="html">&lt;h1&gt;ruby-zoom port to 1.9.2&lt;/h1&gt;
+
+&lt;p&gt;I just finished porting the ruby-zoom gem to 1.9.2. Previously, it was only compatible with ruby 1.8.7. So, now you can search library catalogs using &lt;a href=&quot;http://en.wikipedia.org/wiki/Z39.50&quot;&gt;z39.50&lt;/a&gt; in your 1.9.2 apps. You can find the repository on Github: &lt;a href=&quot;https://github.com/bricestacey/ruby-zoom&quot;&gt;ruby-zoom&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This was born out of a need in my &lt;a href=&quot;https://github.com/bricestacey/gift_manager&quot;&gt;Gift Manager&lt;/a&gt; app. I don't really know the details of how z39.50 works and full credit is due to the &lt;a href=&quot;https://github.com/bricestacey/ruby-zoom/blob/master/AUTHORS&quot;&gt;original authors&lt;/a&gt; and the makers of &lt;a href=&quot;http://www.indexdata.com/yaz&quot;&gt;YAZ&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Recover Deleted Items in Voyager</title>
+   <link href="http://tom.preston-werner.com/2011/05/06/recover-deleted-items-in-voyager.html"/>
+   <updated>2011-05-06T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2011/05/06/recover-deleted-items-in-voyager</id>
+   <content type="html">&lt;h1&gt;Recover Deleted Items in Voyager&lt;/h1&gt;
+
+&lt;p&gt;I was pruning old ILL records from the catalog yesterday when I accidentally deleted some video that was actually in our collection. There is no undo button when cataloging, but I knew all was not lost.&lt;/p&gt;
+
+&lt;p&gt;When you delete an item in Voyager, a line is added to the log file &lt;strong&gt;/m1/voyager/xxxumb/rpt/delete.item&lt;/strong&gt;. You can find the format for this file in the Technical Manual, Chapter 20 - Item Delete Standard Interface File. It contains all the data necessary to recreate the record and attach to the proper MFHD.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Nostos</title>
+   <link href="http://tom.preston-werner.com/2011/04/11/Nostos.html"/>
+   <updated>2011-04-11T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2011/04/11/Nostos</id>
+   <content type="html">&lt;h1&gt;Nostos&lt;/h1&gt;
+
+&lt;p&gt;I've recently uploaded my work on &lt;a href=&quot;https://github.com/bricestacey/nostos&quot;&gt;Nostos&lt;/a&gt; to Github. I'm really excited about finally finishing it and urge you to check it out.&lt;/p&gt;
+
+&lt;p&gt;Nostos simplifies library circulation systems by integrating transactions from disparate systems. Nostos was originally developed to integrate a library's interlibary loan system with its integrated library system. This lets libraries to manage circulation within a single system, allowing patrons to check a single account and simplifying their experience. It also improves administration in that circulation notifications, policies, reporting, and auditing originate from a single system, which is most likely the library's most powerful/mature circulation system.&lt;/p&gt;
+
+&lt;!--break--&gt;
+
+
+&lt;p&gt;Nostos is built to be a modular system. Thus, you must install at minimum one source and one target driver. Currently, Nostos is prebuilt for Illiad and Voyager, however, I plan to pull those drivers out as separate gems to make development easier for other systems.&lt;/p&gt;
+
+&lt;p&gt;Currently, Nostos only creates records in a target for each source. I have already begun development on enhancements that further keep their circulation status in sync for example automatically charging items in Illiad when they are charged in Voyager, automatically detecting mismatched due dates, and automatically detecting items returned in Illiad but still charged in Voyager. I hope to put those in a nice easy to use web interface.&lt;/p&gt;
+
+&lt;p&gt;As a tangent, I've created a couple supporting gems including &lt;a href=&quot;https://github.com/bricestacey/activerecord-illiad-adapter&quot;&gt;activerecord-illiad-adapter&lt;/a&gt; to help interface with the Illiad database and &lt;a href=&quot;https://github.com/bricestacey/voyager&quot;&gt;voyager-sip&lt;/a&gt; to interface with Voyager's SIP server. I implemented the bare minimum for each, however I plan to extend them as I see a need.&lt;/p&gt;
+
+&lt;p&gt;Cheers,&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Exporting Voyager Circulation Calendars to Google Calendar</title>
+   <link href="http://tom.preston-werner.com/2011/03/15/Exporting-Voyager-Circulation-Calendars-to-Google-Calendar.html"/>
+   <updated>2011-03-15T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2011/03/15/Exporting-Voyager-Circulation-Calendars-to-Google-Calendar</id>
+   <content type="html">&lt;h1&gt;Exporting Voyager Circulation Calendars to Google Calendar&lt;/h1&gt;
+
+&lt;p&gt;I recently setup Voyager's Circulation Calendar for the next 6 months. That spans Spring Break, extended hours, and the Summer resulting in 118 exceptions. That's a lot to check for accuracy. I could probably have eliminated some of the redundancy in the exceptions by creating multiple calendars with sane defaults, but that'd probably add more complexity than what it's worth. So, I created a script to export a Voyager Circulation Calendar into Google Calendar so that you can better visual the results. Bonus features include calendar sharing - so others can verify its accuracy without needing access to Circulation in the SysAdmin module. Even better, Google's iCal support allows me to pull it into Outlook so even a Luddite is just a click away from looking up the calendar.&lt;/p&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;https://github.com/bricestacey/voyager-utils/tree/master/hours2gcal#readme&quot;&gt;source on Github&lt;/a&gt;, which includes a readme.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require 'googlecalendar'
+require 'active_record'
+
+CONFIG = {
+  :start =&amp;gt; {
+    :year =&amp;gt; 2011,
+    :month =&amp;gt; 3,
+    :day =&amp;gt; 15
+  },
+  :end =&amp;gt; {
+    :year =&amp;gt; 2011,
+    :month =&amp;gt; 8,
+    :day =&amp;gt; 25
+  },
+  :database =&amp;gt; {
+    :database =&amp;gt; '',
+    :username =&amp;gt; '',
+    :password =&amp;gt; ''
+  },
+  :gcal =&amp;gt; {
+    :email =&amp;gt; '',
+    :password =&amp;gt; ''
+  },
+  :calendar_id =&amp;gt; 22
+}
+
+class Calendar &amp;lt; ActiveRecord::Base
+  set_table_name :calendar
+  set_primary_key :calendar_id
+  has_many :holidays
+end
+
+class Holiday &amp;lt; ActiveRecord::Base
+  set_table_name 'exception_calendar'
+  set_primary_key 'calendar_id' # Exception_calendar primary key is actually (:calendar_id, :exception_date)
+  belongs_to :calendar
+end
+
+ActiveRecord::Base.establish_connection(
+  :adapter  =&amp;gt; &quot;oracle_enhanced&quot;,
+  :database =&amp;gt; CONFIG[:database][:database],
+  :username =&amp;gt; CONFIG[:database][:username],
+  :password =&amp;gt; CONFIG[:database][:password]
+)
+
+hours = Calendar.find_by_sql(&quot;SELECT * FROM calendar WHERE calendar_id = #{CONFIG[:calendar_id]}&quot;)[0]
+
+
+g = Googlecalendar::GData.new
+g.login(CONFIG[:gcal][:email], CONFIG[:gcal][:password])
+
+# Iterate over the date from start to end
+(Date.new(CONFIG[:start][:year], CONFIG[:start][:month], CONFIG[:start][:day])..Date.new(CONFIG[:end][:year], CONFIG[:end][:month], CONFIG[:end][:day])).each do |current|
+  # Default to setting the open, close, and opened according to the calendar's default settings
+  case current.strftime('%A')
+    when 'Sunday'
+      open = hours.sunday_openhour
+      close = hours.sunday_closehour
+      opened = hours.sunday_open
+    when 'Monday'
+      open = hours.monday_openhour
+      close = hours.monday_closehour
+      opened = hours.monday_open
+    when 'Tuesday'
+      open = hours.tuesday_openhour
+      close = hours.tuesday_closehour
+      opened = hours.tuesday_open
+    when 'Wednesday'
+      open = hours.wednesday_openhour
+      close = hours.wednesday_closehour
+      opened = hours.wednesday_open
+    when 'Thursday'
+      open = hours.thursday_openhour
+      close = hours.thursday_closehour
+      opened = hours.thursday_open
+    when 'Friday'
+      open = hours.friday_openhour
+      close = hours.friday_closehour
+      opened = hours.friday_open
+    when 'Saturday'
+      open = hours.saturday_openhour
+      close = hours.saturday_closehour
+      opened = hours.saturday_open
+  end
+
+  # Check for an exception on this day.
+  holiday = hours.holidays.find(:first, :conditions=&amp;gt; &quot;exception_date = '#{current.strftime('%Y-%m-%d 00:00:00')}'&quot;)
+  # If we have an exception, set open, close, and opened according to the exception
+  unless holiday.nil?
+    open = holiday.exception_openhour
+    close = holiday.exception_closehour
+    opened = holiday.exception_open
+  end
+
+  # Cast from types in database to String
+  open = open.to_s
+  close = close.to_s
+  opened = opened.to_s
+
+  if opened == 'Y' 
+    # We're open
+    open = ' ' + open if open.length == 3    # Pad 3 digit hours (e.g. &quot;930&quot;) with whitespace (e.g. &quot; 930&quot;)
+    close = ' ' + close if close.length == 3 # Pad 3 digit hours (e.g. &quot;930&quot;) with whitespace (e.g. &quot; 930&quot;)
+
+    # Assumes the library always opens in the morning.
+    # e.g. &quot;Open 2011-03-15  7:30am-9:30pm&quot;
+    s = &quot;Open #{current.strftime('%Y-%m-%d')} #{open[0..1]}:#{open[2..3]}am-#{(close[0..1].to_i - 12).to_s}:#{close[2..3]}pm&quot;
+  else 
+    # We're closed
+    # e.g. &quot;Closed 2011-03-15&quot;
+    s = &quot;Closed #{current.strftime('%Y-%m-%d')}&quot;
+  end
+  puts &quot;Creating: #{s}&quot;
+
+  # Add to default google calendar
+  #g.quick_add(s)
+
+  # Sleep so as not to be blocked by Google
+  #sleep(1)
+end
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>MFHD Delete</title>
+   <link href="http://tom.preston-werner.com/2010/11/29/MFHD-Delete.html"/>
+   <updated>2010-11-29T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2010/11/29/MFHD-Delete</id>
+   <content type="html">&lt;h1&gt;MFHD Delete&lt;/h1&gt;
+
+&lt;p&gt;We accidentally created 70,000 mfhds in Voyager and needed to delete them. Using Voyager's webadmin this would be a tedious task. First, we'd need to export an interleaved MARC file of bibs and mfhds and then import it with some weird settings in order to just delete the mfhds. It's ridiculous.  Luckily, Voyager ships with an API named BatchCat.dll, which allows you to write software to add, modify, and delete records from the catalog.&lt;/p&gt;
+
+&lt;p&gt;Using BatchCat, we can simply connect to Voyager and say, &quot;Delete this mfhd,&quot; and it just works. Wonderful. Anyway, this is the code I used to ultimately delete the mfhds. It reads an input file with one mfhd id on each line and deletes it and goes to the next. It does not attempt to delete any items attached to the mfhd. It also runs super fast (approximately 50,000 in 2.5 hours)&lt;/p&gt;
+
+&lt;p&gt;This is my first crack at C#. I hate it and have no desire to learn it, so please forgive any mistakes or clumsiness in the code.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/720635.js?file=BatchCat.cs&quot;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Thanks to Paul Hoffman's &lt;a href=&quot;http://documents.el-una.org/491/&quot;&gt;Robocat&lt;/a&gt;, which helped me figure out the basics of C#.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Nostos - Automated Creation of Voyager Short Records for Illiad Returnables</title>
+   <link href="http://tom.preston-werner.com/2010/11/03/Nostos---Automated-Creation-of-Voyager-Short-Records-for-Illiad-Returnables.html"/>
+   <updated>2010-11-03T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2010/11/03/Nostos---Automated-Creation-of-Voyager-Short-Records-for-Illiad-Returnables</id>
+   <content type="html">&lt;h1&gt;Nostos - Automated Creation of Voyager Short Records for Illiad Returnables&lt;/h1&gt;
+
+&lt;p&gt;I've started development on Nostos, a ruby on rails application that automatically creates short records in Voyager for returnable items received in Illiad. This allows Voyager libraries to circulate Illiad returnables within Voyager's circulation module. This can already be done if libraries manually create the short records in Voyager, however it's tedious and best left to automation. That's what Nostos is for.&lt;/p&gt;
+
+&lt;p&gt;I've already created a working prototype that is in production at UMass Boston since the start of the Fall 2010 semester. It's a single PHP script that polls Illiad for loan transactions and creates a short record in Voyager using the SIP protocol. Nostos, however, will be written in Ruby on Rails, have an administrative interface, be well tested, and sustainable into the future (my PHP script was not).&lt;/p&gt;
+
+&lt;p&gt;Having Illiad returnables circulate in Voyager has been a boon for everyone at UMass Boston. Patrons can check a single account to check on the status of all their items on loan. Patrons are also sent courtesy, overdue, recall, and lost notifications that are consistent with other circulation transactions. Patrons will also accrue fines and fees, which will encourage timely returns.&lt;/p&gt;
+
+&lt;p&gt;Most importantly, very little additional staff time was required to achieve these results. In fact, I'd argue that integration of Voyager and Illiad saves you time. Nostos only makes it easier.&lt;/p&gt;
+
+&lt;p&gt;You can follow the development at Github: &lt;a href=&quot;https://github.com/bricestacey/nostos&quot;&gt;https://github.com/bricestacey/nostos&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I intend to develop Nostos using test driven development. I really want to make it work and be able to verify that it works in future. I'll be creating integrated tests with &lt;a href=&quot;http://cukes.info/&quot;&gt;Cucumber&lt;/a&gt; and unit testing with &lt;a href=&quot;https://github.com/dchelimsky/rspec/wiki/rails&quot;&gt;RSpec&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let me know what you think of the project in the comments. I'd like to discuss with anyone interested.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How Voyager libraries using SIP can configure a short and long loan period for WorldCat Navigator</title>
+   <link href="http://tom.preston-werner.com/2010/09/27/How-Voyager-libraries-using-SIP-can-configure-a-short-and-long-loan-period-for-WorldCat-Navigator.html"/>
+   <updated>2010-09-27T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2010/09/27/How-Voyager-libraries-using-SIP-can-configure-a-short-and-long-loan-period-for-WorldCat-Navigator</id>
+   <content type="html">&lt;h1&gt;How Voyager libraries using SIP can configure a short and long loan period for WorldCat Navigator&lt;/h1&gt;
+
+&lt;p&gt;The Boston Library Consortium currently uses WorldCat Local / Navigator to manage consortial borrowing. This article will describe how Voyager libraries can implement both long and short loan periods using SIP [&lt;a href=&quot;#1&quot;&gt;1&lt;/a&gt;]. I recommend that you download the manual &lt;em&gt;Interface to Self Check Modules Using 3M SIP&lt;/em&gt; for a more detailed guide [&lt;a href=&quot;#2&quot;&gt;2&lt;/a&gt;]. Follow along in the the chapter Setting Up SIP Self Check - System Administration Setup.&lt;/p&gt;
+
+&lt;p&gt;When checking out books in Voyager with SIP, just like when using the Circulation Module, the specific circulation policy used is determined by the combination of item type and patron group at time of the transaction. Voyager does not support arbitrary due dates [&lt;a href=&quot;#3&quot;&gt;3&lt;/a&gt;][&lt;a href=&quot;#4&quot;&gt;4&lt;/a&gt;].  Therefore, in order to implement a long and short loan period we will need two item types [&lt;a href=&quot;#5&quot;&gt;5&lt;/a&gt;] and the particular item type will need to be assigned at the point an item is created.&lt;/p&gt;
+
+&lt;p&gt;Items are created using the &lt;strong&gt;Create Bib Record Request&lt;/strong&gt; [&lt;a href=&quot;#6&quot;&gt;6&lt;/a&gt;], a Voyager-only extension to SIP that creates a Bib / MFHD / Item trio. Looking at the specifications for that message (Appendix B-24), you'll notice that there is no field to specify an item's item type. Instead, the item type is determined by the &lt;strong&gt;Default Item Type&lt;/strong&gt; of the location your SIP operator uses to sign in [&lt;a href=&quot;#7&quot;&gt;7&lt;/a&gt;]. Prior to using SIP, you must sign in using the SIP operator's username, password, and also choose a location just as you would when using any Voyager module. So, let's delve into how we might go about getting it all to work together.&lt;/p&gt;
+
+&lt;h2&gt;Create SIP Circulation Security Policy&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Skip this section if you already have a SIP circulation policy. If you are currently borrowing with integrated circulation, this is most likely already done.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Circulation Security Policies determine what circulation tasks operators are allowed to perform.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Security &gt; Circulation Profiles.&lt;/li&gt;
+&lt;li&gt;Click New.&lt;/li&gt;
+&lt;li&gt;Enter a name. Example: SIP for WorldCat Local.&lt;/li&gt;
+&lt;li&gt;Click the Profiles tab.&lt;/li&gt;
+&lt;li&gt;Tick Charge/Renew, Discharge, Add/Update Recall/Hold Requests, Mask Patron Social Security Number, View-Only Patorn Records.&lt;/li&gt;
+&lt;li&gt;Click save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Create SIP Operator Profile&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Skip this section if you already have a working SIP operator. If you are currently borrowing with integrated circulation, this is most likely already done.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Security &gt; Operator Profiles.&lt;/li&gt;
+&lt;li&gt;Click New Give the operator a first and last name, username, and password.&lt;/li&gt;
+&lt;li&gt;Click Save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Assign SIP Operator to Circulation Security Policy&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Skip this section if you already have a working SIP operator. If you are currently borrowing with integrated circulation, this is most likely done.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Security &gt; Circulation Profiles.&lt;/li&gt;
+&lt;li&gt;Select the SIP Circulation Security Policy created in the previous section and click edit.&lt;/li&gt;
+&lt;li&gt;Click the Operator tab.&lt;/li&gt;
+&lt;li&gt;Select the appropriate SIP operator from the list of Available Operators and click the single right arrow button to move it into the list of Selected Operators.&lt;/li&gt;
+&lt;li&gt;Click Save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Create SIP Location&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;If you are currently borrowing with integrated circulation, you will only need to create one additional location for short loans.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Since a location can only have one Default Item Type, you will require a location for each separate item type you wish to have created using SIP.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to System &gt; Locations.&lt;/li&gt;
+&lt;li&gt;Click New.&lt;/li&gt;
+&lt;li&gt;Enter a code (e.g. NRESHORT), name (e.g. SIP NRE Short Loan), spine label name (I'm not sure if this is ever used), and a long descriptive name at OPAC Display Name (e.g. SIP location to implement NRE short loan periods). The manual states it does not matter what you choose for Suppress in OPAC so I recommend leaving it unchecked.&lt;/li&gt;
+&lt;li&gt;Click Save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Assign SIP Location to Circulation Security Policy&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Security &gt; Circulation Profiles.&lt;/li&gt;
+&lt;li&gt;Select the SIP Circulation Security Policy created in the section &quot;Create SIP Circulation Security Policy&quot; or that already exists and click edit.&lt;/li&gt;
+&lt;li&gt;Click the Locations tab.&lt;/li&gt;
+&lt;li&gt;Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.&lt;/li&gt;
+&lt;li&gt;Click Save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h3&gt;Assign SIP Location to a Master Security Policy&lt;/h3&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Security &gt; Master Profiles.&lt;/li&gt;
+&lt;li&gt;Select the Master Security Profiles you wish to be allowed to authorize the SIP location and click edit. At the very least, the Master Profile your operator is a member of will need to have the SIP location added.&lt;/li&gt;
+&lt;li&gt;Click the Locations tab.&lt;/li&gt;
+&lt;li&gt;Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.&lt;/li&gt;
+&lt;li&gt;Click Save.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Assign SIP Location to a Circulation Policy&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Circulation &gt; Policy Definitions.&lt;/li&gt;
+&lt;li&gt;Select a Circulation Policy and click Edit.&lt;/li&gt;
+&lt;li&gt;Click the Locations tab.&lt;/li&gt;
+&lt;li&gt;Select the appropriate SIP location from the list of Available Locations and click the single right arrow button to move it into the list of Selected Locations.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Change the Default Item Type and Default Location of a SIP Location&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Open the SysAdmin module.&lt;/li&gt;
+&lt;li&gt;Go to Circulation &gt; Policy Definitions.&lt;/li&gt;
+&lt;li&gt;Select a Circulation Policy and click Edit.&lt;/li&gt;
+&lt;li&gt;Click the Locations tab.&lt;/li&gt;
+&lt;li&gt;Select the SIP location in the Selected Locations list and click Settings....&lt;/li&gt;
+&lt;li&gt;Set the Default Item Type appropriately. For example, if this location will be used for the short location, be sure to set the default item type to the item type used for short loan durations.&lt;/li&gt;
+&lt;li&gt;Set the Default Location to the default location you want items to have. If you do not track the transit of items from processing to the hold shelf, I suggest indicating the pickup location. However, if you track the transit of items from processing to pickup, you might want to set the Default Location to where you process arriving books.&lt;/li&gt;
+&lt;li&gt;Check Circulation Location.&lt;/li&gt;
+&lt;li&gt;Check Courtesy Discharge.&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;p&gt;At this point, you should be ready to go. You should contact OCLC with the new SIP location code and they'll run you through some tests to be sure it all works. &lt;a href=&quot;#8&quot;&gt;8&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Further Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SIP Specs - &lt;a href=&quot;http://multimedia.3m.com/mws/mediawebserver?mwsId=SSSSSu7zK1fslxtUm8_9m82Uev7qe17zHvTSevTSeSSSSSS--&quot;&gt;http://multimedia.3m.com/mws/mediawebserver?mwsId=SSSSSu7zK1fslxtUm8_9m82Uev7qe17zHvTSevTSeSSSSSS--&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;PHP-SIP Client - &lt;a href=&quot;http://github.com/bricestacey/php-sip&quot;&gt;http://github.com/bricestacey/php-sip&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Notes&lt;/h2&gt;
+
+&lt;p&gt;&lt;a name=&quot;1&quot;&gt;&lt;/a&gt;#1. OCLC's original idea was to append the due date to the title and let each library manually process each book. NRE is considered the bleeding edge of delivery tools in libraries, yet appending due dates to titles seems like such an antiquated solution. Libraries need to figure out technology sooner or later or else they're going to be suckered into such costly, mediocre solutions.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;2&quot;&gt;&lt;/a&gt;#2. You can find it on the Doc Portal under User Guides &gt; Voyager Extension Modules User Guides &gt; Interface to Self Check Modules Using 3M SIP. There you will find two PDFs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;SelfCheck 7.1.pdf (this is for Voyager 7.1)&lt;/li&gt;
+&lt;li&gt;V_InterfaceToSelfCheckModulesUsing3MSIP_20091119.pdf (this is for Voyager 7.2)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;a name=&quot;3&quot;&gt;&lt;/a&gt;#3. I understand you can set an arbitrary due date using the Circulation Module. After charging an item, right click on it and select Modify Due Date.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;4&quot;&gt;&lt;/a&gt;#4. The official 3M SIP protocol supports check out requests with specific due dates, but Voyager's implementation of it does not. With the standard 3M spec, you could set the No Block fixed-field to Y and then set the NB Due Date to the desired due date. However, this seems to be intended so that self checkout machines can continue to operate while offline using some default value and be able to synchronize with the server once it's back online. Next time you choose an ILS, I might suggest choosing one that is committed to fully supporting protocols or you will continue to implement such ugly hacks as I describe in this article.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;5&quot;&gt;&lt;/a&gt;#5. I would suggest a highly descriptive item type. For example NRELONG, NRESHORT so that there is little confusion.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;6&quot;&gt;&lt;/a&gt;#6. A Create Bib Request might look something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;8120100813    133505AO|MFSelfchk|AJThe transformation of learning : / |AB77087|AC|&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This will create an item with the title &quot;The transformation of learning&quot; and an item with barcode 77087. The SIP server might then respond with&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;821MJ633124|MA630995|AFCreate Bib successful.|&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Not so scary looking is it?&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;7&quot;&gt;&lt;/a&gt;#7.  This is a login message&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;9300CNusername|COpassword|CPlocation|&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And a successful response.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;941&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;8&quot;&gt;&lt;/a&gt;#8. This article was written after configuring UMass Boston's server and I have not vetted these instructions with another library. So, these instructions may be insufficient, inaccurate, or otherwise useless. Please let me know if there are any mistakes and I'll happily correct them. if they work, please let me know so I can remove this warning.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Regular Expressions in MS Access</title>
+   <link href="http://tom.preston-werner.com/2010/07/09/Regular-Expressions-in-MS-Access.html"/>
+   <updated>2010-07-09T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2010/07/09/Regular-Expressions-in-MS-Access</id>
+   <content type="html">&lt;h1&gt;Regular Expressions in MS Access&lt;/h1&gt;
+
+&lt;p&gt;I spend most of my time writing SQL queries for Oracle and I've gotten used to functions like REGEXP_LIKE. Lately, however, I have been training a work-study student how to use MS Access for reporting and no such function seemed to exist. I generally try to shy away from delving into advanced MS Access features, but my works-study needs regular expressions and I want my work-study to learn. So, I scrounged the internet and came up with this.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;regexp(&amp;lt;string&amp;gt;, &amp;lt;pattern&amp;gt; [, case sensitive = true])
+returns the matched string, null otherwise.
+
+Examples:
+regexp(&quot;UMS00123456&quot;, &quot;UMS[0-9]{8}&quot;) would return UMS00123456
+regexp(&quot;00123456&quot;, &quot;UMS[0-9]{8}&quot;) would return null
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Configuring MS Access&lt;/h2&gt;
+
+&lt;p&gt;In Access press ALT-F11.
+Click Insert &gt; Module.
+Click Tools &gt; References then tick &quot;Microsoft VBScript Regular Expressions 5.5&quot;
+Then paste the following into the module:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Option Compare Database
+Option Explicit
+
+Function regexp( _
+  StringToCheck As Variant, _
+  PatternToUse As String, _
+  Optional CaseSensitive As Boolean = True)
+
+  Dim re As New regexp
+  re.Pattern = PatternToUse
+  re.Global = False
+  re.IgnoreCase = Not CaseSensitive
+  Dim m
+  For Each m In re.Execute(StringToCheck)
+    regexp = m.Value
+  Next
+End Function
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Enjoy. Let me know if there is a better way.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Setting Item Type and Location Used for WorldCat Navigator (NRE) Items in Voyager</title>
+   <link href="http://tom.preston-werner.com/2010/03/25/Setting-Item-Type-and-Location-Used-for-WorldCat-Navigator-%28NRE%29-Items-in-Voyager.html"/>
+   <updated>2010-03-25T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2010/03/25/Setting-Item-Type-and-Location-Used-for-WorldCat-Navigator-(NRE)-Items-in-Voyager</id>
+   <content type="html">&lt;h1&gt;Setting Item Type and Location Used for WorldCat Navigator (NRE) Items in Voyager&lt;/h1&gt;
+
+&lt;p&gt;WorldCat Navigator integrates with Voyager and creates items as they are received. It does this by making a &lt;em&gt;Create Bib Request&lt;/em&gt; to the SIP server, which creates not only a bib, but also a MFHD and an item record. The item type and location associated with these newly created records is determined by the location used to sign in to the SIP server. I hope to explain how that item type and location is determined.&lt;/p&gt;
+
+&lt;p&gt;First and foremost, you must know which circulation policy the given sign up location is assigned to. You can look it up under &lt;em&gt;System &gt;&gt; Locations&lt;/em&gt; as the &lt;em&gt;Current Circulation Policy Group&lt;/em&gt;. Then, go to &lt;em&gt;Circulation &gt;&gt; Policy Definitions&lt;/em&gt; and select that policy. Choose the &lt;em&gt;Locations&lt;/em&gt; tab, find your sign in location from the selected locations on the right and click &lt;em&gt;Settings&lt;/em&gt;. There will be a drop-down menu labelled &lt;em&gt;Default Item Type&lt;/em&gt;. This is what will be used to determine the item type for items created via SIP. You can see we've named our item type &lt;em&gt;WorldCat Local Navigator&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/location-setting.png&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can also set the &lt;em&gt;Default Location&lt;/em&gt; which will determine the item's &lt;em&gt;Permanent  Location&lt;/em&gt;. How you set  this would depend on your library's workflow.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Circulation Counts for Unique Patrons On Any Given Day</title>
+   <link href="http://tom.preston-werner.com/2010/02/24/Circulation-Counts-for-Unique-Patrons-On-Any-Given-Day.html"/>
+   <updated>2010-02-24T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2010/02/24/Circulation-Counts-for-Unique-Patrons-On-Any-Given-Day</id>
+   <content type="html">&lt;h1&gt;Circulation Counts for Unique Patrons On Any Given Day&lt;/h1&gt;
+
+&lt;p&gt;There was a request today for a Voyager report on a listserv. Here it is.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;I'm trying to compare library usage from Fall 08 semester to Fall 09 semeseter.  One of the things I'd like to do is show how many patrons checked items out of the library during that time period.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If the same patron checked items out on 5 DIFFERENT days during the month of January, I'd like to count that patron 5 times.&lt;/li&gt;
+&lt;li&gt;If the same patron checked out multiple items on the SAME day, I'd like to count that patron once for that day.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;Does anyone have an access report that they use to show circulation usage that they could share?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I whipped up a quick report, but it doesn't run in MS Access. Instead, you must use sqlplus or any other Oracle driver.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-- This report gives a count of the number of patrons initiating transactions
+-- each day. This is a good measurement of the number of unique patrons
+-- circulating items rather than a raw circulation count.
+
+------------------------------------------------------------------------------
+-- Date Grouping
+-- Note: only one of these variables should be uncommented.
+--DEFINE _GROUP_DATES = 'YYYY-MM-DD' -- Group by day
+--DEFINE _GROUP_DATES = 'YYYY-MM'    -- Group by month
+DEFINE _GROUP_DATES = 'YYYY'       -- Group by year
+
+------------------------------------------------------------------------------
+-- Date range. 
+-- Note: that dates default to a time of 00:00:00 (midnight). So you should 
+-- probably add one to your end date.
+DEFINE _DATE_BEGIN  = '01-JAN-08' -- DD-MON-YY
+DEFINE _DATE_END    = '01-JAN-09' -- DD-MON-YY
+
+SELECT
+  count(patron_id) as &quot;Count&quot;
+, charge_date as &quot;Date&quot;
+FROM 
+  (SELECT UNIQUE
+    patron_id
+  , to_char(to_date(charge_date, 'YYYY-MM-DD'), '&amp;amp;_GROUP_DATES') as charge_date
+  FROM
+  ((SELECT UNIQUE 
+      patron_id
+    , to_char(charge_date, 'YYYY-MM-DD') as charge_date
+    FROM
+      circ_trans_archive
+    WHERE
+      charge_date between '&amp;amp;_DATE_BEGIN' and '&amp;amp;_DATE_END')
+   union
+   (SELECT UNIQUE 
+      patron_id
+    , to_char(charge_date, 'YYYY-MM-DD') as charge_date 
+    FROM
+      circ_transactions
+    WHERE 
+      charge_date between '&amp;amp;_DATE_BEGIN' and '&amp;amp;_DATE_END'))
+  )
+GROUP BY
+  charge_date
+ORDER BY
+  2;
+
+UNDEF _GROUP_DATES
+UNDEF _DATE_BEGIN
+UNDEF _DATE_END
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The general idea is to union the active transactions with the archived transactions. We also convert the charge date to a string of only its date (no time). This will allow the unique operation to remove duplicate patrons on any given day. We can then group by year, month, or date as configured.&lt;/p&gt;
+
+&lt;p&gt;Here is some sample output:&lt;/p&gt;
+
+&lt;p&gt;By date:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     Count Date
+---------- ----------
+       232 2008-12-01
+       237 2008-12-02
+       242 2008-12-03
+       233 2008-12-04
+       144 2008-12-05
+        41 2008-12-06
+        17 2008-12-07
+       222 2008-12-08
+       248 2008-12-09
+       242 2008-12-10
+       247 2008-12-11
+       134 2008-12-12
+        27 2008-12-13
+        27 2008-12-14
+       156 2008-12-15
+       146 2008-12-16
+       128 2008-12-17
+       113 2008-12-18
+         1 2008-12-19
+         5 2008-12-20
+        20 2008-12-22
+        22 2008-12-23
+        13 2008-12-24
+         7 2008-12-26
+        28 2008-12-29
+        27 2008-12-30
+         8 2008-12-31
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By month:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     Count Date
+---------- -------
+       747 2008-01
+      1856 2008-02
+      1704 2008-03
+      1821 2008-04
+      1510 2008-05
+       510 2008-06
+       554 2008-07
+       419 2008-08
+      2045 2008-09
+      2049 2008-10
+      1829 2008-11
+      1636 2008-12
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By year:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;     Count Date
+---------- ----
+      6702 2008
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Please note that this report only works if you have elected to retain patron ids for circulation history. This is an option in the module SysAdmin &gt; System &gt; &quot;Retain patron id for circ history&quot;.&lt;/p&gt;
+
+&lt;p&gt;I've done my best to make the report easy to modify by using variables instead of embedding magic numbers.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Automate Deleting SSNs using Macro Express where Pptrnupdt Doesn't Work</title>
+   <link href="http://tom.preston-werner.com/2010/02/23/Automate-Deleting-SSNs-using-Macro-Express-where-Pptrnupdt-Doesn%27t-Work.html"/>
+   <updated>2010-02-23T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2010/02/23/Automate-Deleting-SSNs-using-Macro-Express-where-Pptrnupdt-Doesn't-Work</id>
+   <content type="html">&lt;h1&gt;Automate Deleting SSNs using Macro Express where Pptrnupdt Doesn't Work&lt;/h1&gt;
+
+&lt;p&gt;Several months ago I purged most of the social security numbers from Healey Library's patron database using Voyager's patron update (Pptrnupdt), but there were several thousand patrons remaining without institution ids. Pptrnupdt only matches patrons by social security number or by Institution ID. Therefore Pptrnupdt would not work gracefully to finish off the project. If anyone from Ex Libris is reading this, please include a Patron ID index type, thanks.&lt;/p&gt;
+
+&lt;p&gt;To finally clear our the remaining SSNs, I used Macro Express. In a nutshell, it can automate tasks by performing keystrokes, mouse movement and clicks, logic using UI elements such as window title and contents, and process text files line by line among many other things. I totally recommend it. It also comes with a 30 day trial, so you can do a couple large batch projects before having to pay.&lt;/p&gt;
+
+&lt;p&gt;Voyager has a keyboard shortcut for just about everything and even when there is not one, some combination of keystrokes will get you wherever you need to be. Thus, I present a script that processes barcodes from barcodes.txt on my desktop, looks up the patron, edits the patron, removes the SSN field, saves the patron, and moves on to the next. You can copy paste this into the Direct Editor.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;SPKEY:0050&amp;gt;&amp;lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\barcodes.txt&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;&amp;lt;ALTU&amp;gt;p&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;a&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:%T1%&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;IMSD:500&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;p&amp;lt;ALTU&amp;gt;e&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;s&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;DELETE&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;v&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;o&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;gt;&amp;lt;BTFEND&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once pasted into the Direct Editor, you can select the Scripting Editor to get a more user-friendly view of your script. There, you can add, remove, disable, or modify commands. Here is what this script would look like in the Scripting Editor and I've annotated it for better understanding.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Keystroke Speed&lt;/strong&gt;: 50 Milliseconds (any faster and my system trips over itself)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text File Begin Process&lt;/strong&gt;: &quot;barcodes.txt&quot; (will need to modify this to point to your file. Also, I've chosen to save each line in variable T1)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;&lt;ALTU&gt;p&lt;ENTER&gt; (menu: Patron &gt; Search for Patron...)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;a&lt;ALTU&gt; (select barcode search index)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: %T1% (current barcode that is being processed from barcodes.txt)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ENTER&gt; (search)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Delay 500 Milliseconds&lt;/strong&gt;: in case there are duplicate barcodes, this gives your system enough time to popup the list of patrons to select from&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ENTER&gt; (If there was only one patron with this barcode, this does nothing. Otherwise, it selects the first person from the list. You can insert a ARROW DOWN if you want to select the second)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;p&lt;ALTU&gt;e (menu: Patron &gt; Edit Patron...)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;s&lt;ALTU&gt; (select the SSN field)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;DELETE&gt; (selecting the SSN field selects its entire contents, so delete will clear the whole field)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;v&lt;ALTU&gt; (Save)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ALTD&gt;o&lt;ALTU&gt; (Ok - closes the Edit Patron window)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text Type&lt;/strong&gt;: &lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt; (just in case we got stuck somewhere. This will close the Edit Patron window and cancel any activate menu items.)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Text File End Process&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;The script expects you to start with the Patron window open. You can easily get there by clicking the Patron button and pressing ESC to get out of the Patron Search dialog box. It doesn't matter that a particular might be open. As you'll see when the script loops, that's precisely its state.&lt;/p&gt;
+
+&lt;h2&gt;Other Scripts&lt;/h2&gt;
+
+&lt;p&gt;Here are some other macros I used to clean out some others lying about:&lt;/p&gt;
+
+&lt;p&gt;Delete SSNs using SSN search index.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;SPKEY:0050&amp;gt;&amp;lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\ssn.txt&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;&amp;lt;ALTU&amp;gt;p&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;n&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:%T1%&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;IDELAY:1&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;p&amp;lt;ALTU&amp;gt;e&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;s&amp;lt;ALTU&amp;gt;&amp;lt;DELETE&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;v&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;o&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;gt;&amp;lt;BTFEND&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Delete SSNs using Institution ID search index.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;SPKEY:0050&amp;gt;&amp;lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\iid.txt&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;&amp;lt;ALTU&amp;gt;p&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;d&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:%T1%&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;IMSD:500&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;p&amp;lt;ALTU&amp;gt;e&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;s&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;DELETE&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;v&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;o&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;gt;&amp;lt;BTFEND&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Delete SSNs using First Name and Last Name search index. This one is most complicated as I had to parse the first 20 characters (first name) of each line into a variable and the next 30 characters (last name) into another. Both variables were also trimmed to eliminate whitespace.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;SPKEY:0050&amp;gt;&amp;lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\names.txt&amp;gt;&amp;lt;TMVAR2:10:02:01:001:020:&amp;gt;&amp;lt;TMVAR2:01:02:00:000:000:&amp;gt;&amp;lt;TMVAR2:10:03:01:021:030:&amp;gt;&amp;lt;TMVAR2:01:03:00:000:000:&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;&amp;lt;ALTU&amp;gt;p&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;e&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;l&amp;lt;ALTU&amp;gt;%T3%&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;i&amp;lt;ALTU&amp;gt;%T2%&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;IMSD:500&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ENTER&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;p&amp;lt;ALTU&amp;gt;e&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;s&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;DELETE&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;v&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ALTD&amp;gt;o&amp;lt;ALTU&amp;gt;&amp;gt;&amp;lt;TEXTTYPE:&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;lt;ESC&amp;gt;&amp;gt;&amp;lt;BTFEND&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you've got any ideas for other macros, leave me a comment.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>SQL to Generate User Lists in Voyager, Drupal, and ILLiad</title>
+   <link href="http://tom.preston-werner.com/2010/01/12/SQL-to-Generate-User-Lists-in-Voyager%2C-Drupal%2C-and-ILLiad.html"/>
+   <updated>2010-01-12T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2010/01/12/SQL-to-Generate-User-Lists-in-Voyager,-Drupal,-and-ILLiad</id>
+   <content type="html">&lt;h1&gt;SQL to Generate User Lists in Voyager, Drupal, and ILLiad&lt;/h1&gt;
+
+&lt;p&gt;Today, we need reports of all active users for our applications. Here, I whip up SQL to retrieve this data in Voyager, Drupal, and ILLiad.&lt;/p&gt;
+
+&lt;p&gt;I find most interesting that each application has a unique approach to staff accounts. Both Voyager and ILLiad have a distinct table for its patrons and staff. Drupal makes no distinction. This makes sense in terms of design intentions. Voyager and ILLiad are products with an obvious distinction between customer and employee. Drupal can implement the same effect, but comes as a more generic tool.&lt;/p&gt;
+
+&lt;p&gt;My least favorite name for a staff account is Voyager's use of &quot;operator&quot;. It sounds as if we should be handling heavy equipment.&lt;/p&gt;
+
+&lt;h2&gt;Voyager Operators&lt;/h2&gt;
+
+&lt;p&gt;This will list all the operators with their assigned circulation, acquisitions, and cataloging profile. Notice I use left joins in order to be sure all operators appear whether or not they happen to have profiles for any of the three modules.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT
+  first_name
+, last_name
+, circ_profile_name
+, acq_profile_name
+, cat_profile_name
+FROM
+  operator
+  left join circ_operator using(operator_id)
+  left join circ_profile using(circ_profile_id)
+  left join acq_operator using(operator_id)
+  left join acq_profile using(acq_profile_id)
+  left join cat_operator using(operator_id)
+  left join cat_profile using(cat_profile_id)
+ORDER BY
+  2, 1 ASC
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Drupal Users&lt;/h2&gt;
+
+&lt;p&gt;Drupal users can have multiple roles. Thus, I grouped by username and then concatenated all the roles with a comma. If you have more structured roles (e.g. if their permissions could be isolated to particular modules like the Circ, Acq, and Cat modules in Voyager), you could make this more elegant. We don't do such things in Drupal, so I don't bother.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT 
+  users.name as Username
+, group_concat(role.name ORDER BY role.name ASC SEPARATOR &quot;, &quot;) as Roles
+FROM
+  users
+  LEFT JOIN users_roles USING(uid)
+  LEFT JOIN role USING(rid)
+WHERE
+  status &amp;gt; 0
+GROUP BY
+  uid
+ORDER BY
+  users.name ASC
+LIMIT 0, 500
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;ILLiad Staff&lt;/h2&gt;
+
+&lt;p&gt;Lastly, the ILLiad staff accounts. Simple and easy.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT 
+  dbo_Staff.Username
+, dbo_Staff.StaffFirstName
+, dbo_Staff.StaffLastName
+, dbo_Staff.UserGroup
+FROM 
+  dbo_Staff;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Initialize Local Git Repository</title>
+   <link href="http://tom.preston-werner.com/2009/12/27/Initialize-Local-Git-Repository.html"/>
+   <updated>2009-12-27T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2009/12/27/Initialize-Local-Git-Repository</id>
+   <content type="html">&lt;h1&gt;Initialize Local Git Repository&lt;/h1&gt;
+
+&lt;p&gt;I am starting a new coding project, but I always have trouble remembering how to configure my initial Git repository. Most of the tutorials online assume you want to create a git repository out of a working directory. Since I am starting this project from scratch, I don't particularly like to do this. I prefer to create a bare repository to be the master copy, clone it in some working directory, and push any commits back to the master. Conceptually, this process is most congruent with what is going on in my mind. First, I build the box, then I fill it.&lt;/p&gt;
+
+&lt;p&gt;First, create the Git repository:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/git/ezpc.git
+cd ~/git/ezpc.git
+git init --bare .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, clone it to a working directory:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir ~/projects/ezpc
+cd ~/projects/ezpc
+git clone ~/git/ezpc.git/ .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure which repository you will push and pull to:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote rm origin
+git remote add origin ~/git/ezpc.git
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then you can make your commits and just type &lt;code&gt;git push&lt;/code&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>BeeTagg QR Code Reader for iPhone</title>
+   <link href="http://tom.preston-werner.com/2009/12/17/BeeTagg-QR-Code-Reader-for-iPhone.html"/>
+   <updated>2009-12-17T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2009/12/17/BeeTagg-QR-Code-Reader-for-iPhone</id>
+   <content type="html">&lt;h1&gt;BeeTagg QR Code Reader for iPhone&lt;/h1&gt;
+
+&lt;p&gt;I've been looking for a good &lt;a href=&quot;http://en.wikipedia.org/wiki/QR_Code&quot;&gt;QR Code&lt;/a&gt; reader for my iPhone. I tested 8 different applications before I found one I liked. My requirements were to be free, work most of the time, and to have automatic code detection. &lt;a href=&quot;http://www.beetagg.com/&quot;&gt;BeeTagg Pro&lt;/a&gt; was the first of eight to satisfy. I suggest anyone that wants a free reader to give it a shot.&lt;/p&gt;
+
+&lt;p&gt;This QR code contains a URL to this site.&lt;/p&gt;
+
+&lt;p&gt;&lt;img title=&quot;http://bricestacey.com&quot; alt=&quot;http://bricestacey.com&quot; src=&quot;http://chart.apis.google.com/chart?cht=qr&amp;chl=http://bricestacey.com&amp;choe=UTF-8&amp;chs=150x150&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;I tested the following apps:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BeeTagg Pro (recommend)&lt;/li&gt;
+&lt;li&gt;Barcode&lt;/li&gt;
+&lt;li&gt;Barcodes&lt;/li&gt;
+&lt;li&gt;QR app&lt;/li&gt;
+&lt;li&gt;2D Sense&lt;/li&gt;
+&lt;li&gt;NeoReader&lt;/li&gt;
+&lt;li&gt;iDecode&lt;/li&gt;
+&lt;li&gt;Mobi Reader&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Converting from Event module to CCK Date</title>
+   <link href="http://tom.preston-werner.com/2009/12/02/Converting-from-Event-module-to-CCK-Date.html"/>
+   <updated>2009-12-02T00:00:00-05:00</updated>
+   <id>http://tom.preston-werner.com/2009/12/02/Converting-from-Event-module-to-CCK-Date</id>
+   <content type="html">&lt;h1&gt;Converting from Event module to CCK Date&lt;/h1&gt;
+
+&lt;p&gt;I've been preparing the Healey Library's website to be upgraded to Drupal 6. That includes getting each module up to date, but in some cases it means finding a replacement. The &lt;a href=&quot;http://drupal.org/project/event&quot;&gt;Event&lt;/a&gt; module has been one of those modules that came to a screeching halt following the release of Drupal 6. Luckily, &lt;a href=&quot;http://drupal.org/project/date&quot;&gt;Date&lt;/a&gt; is far superior and easily fills its place.&lt;/p&gt;
+
+&lt;p&gt;I have only created a single Event content type, ironically called &lt;em&gt;event&lt;/em&gt;. For this content type, I created a &lt;em&gt;new CCK Date field&lt;/em&gt; called &lt;em&gt;eventdate&lt;/em&gt;. When configuring this field, I enabled an &lt;em&gt;Optional To Date&lt;/em&gt;. Next, I ran a short script that would &lt;em&gt;transfer existing Event Module data into our new field&lt;/em&gt;. You should use the &lt;a href=&quot;http://drupal.org/project/devel&quot;&gt;Devel Module&lt;/a&gt; to execute this PHP. Please note: You will need to change the timezone to reflect your implementation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+// Iterate through each event.
+$result = db_query(&quot;SELECT * FROM {event}&quot;);
+while ($event = db_fetch_array($result)){
+  // Transform the date information
+  // CCK date format: Y-m-d\TH:i:s
+  // Event date format: unix timestamp
+  $startdate = date('Y-m-d\TH:i:s', $event['event_start']);
+  $enddate = date('Y-m-d\TH:i:s', $event['event_end']);
+  $nid = $event['nid'];
+
+  // Load the node corresponding to the event
+  $node = node_load(array('nid' =&amp;gt; $nid));
+
+  $node-&amp;gt;field_eventdate[0]['value'] = $startdate;
+  $node-&amp;gt;field_eventdate[0]['value2'] = $enddate;
+  $node-&amp;gt;field_eventdate[0]['timezone'] = 'America/New_York';
+  $node-&amp;gt;field_eventdate[0]['timezone_db'] = 'America/New_York';
+  $node-&amp;gt;field_eventdate[0]['date_type'] = 'Date';
+
+  // Save the modified node
+  node_save($node);
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, we can disable and uninstall the Event module. Then, create a new content type with the same original machine readable name as your original event node (in my case, event). Then you're done!&lt;/p&gt;
+
+&lt;p&gt;You will undoubtedly need to make changes throughout the rest of your site, particularly modifying any views and themes that used the original event data structures.&lt;/p&gt;
+
+&lt;p&gt;For the record, at the time of this writing I was running Event 5.x-1.0 and Date 5.x-2.8.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>PHP-SIP Client Released</title>
+   <link href="http://tom.preston-werner.com/2009/10/23/PHP-SIP-Client-Released.html"/>
+   <updated>2009-10-23T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/10/23/PHP-SIP-Client-Released</id>
+   <content type="html">&lt;h1&gt;PHP-SIP Client Released&lt;/h1&gt;
+
+&lt;p&gt;Earlier this year I investigated how &lt;a href=&quot;/2009/04/27/Voyager-Self-Check-selfchk.html&quot;&gt;Standard Interchange Protocol (SIP)&lt;/a&gt; was actually used for consortial borrowing. It's one of those protocols that is often spoken of, but I'm sure few could tell you much about. That scared me, so I wanted to learn more.&lt;/p&gt;
+
+&lt;p&gt;After I got my hands on a copy of the specs and was able to connect and send messages to our SIP server, I was incredibly excited about the possibilities. So I put together a quick &lt;a href=&quot;http://github.com/bricestacey/php-sip&quot;&gt;PHP-SIP Client&lt;/a&gt; that I am now hosting on github.&lt;/p&gt;
+
+&lt;p&gt;Before sending any SIP messages, you have to login. Here is an example snippet on how to log in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+$socket = sipapi_connect('sip.example.com', '7031');
+$fields = array(
+    'UIDAlgorithm' =&amp;gt; '0',
+    'PWDAlgorithm' =&amp;gt; '0',
+    'CN' =&amp;gt; 'insert_username',
+    'CO' =&amp;gt; 'insert_password',
+    'CP' =&amp;gt; 'insert_location',
+  );
+$msg = sipapi_msg93($fields);
+$response = sipapi_send_message($socket, $msg);
+print_r($response);
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once you've successfully logged in, you can lookup a patron with the following snippet:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+$fields = array(
+    'Language' =&amp;gt; '001',
+    'Summary' =&amp;gt; '',
+    'AO' =&amp;gt; 'drupalcirc',
+    'AA' =&amp;gt; 'insert_patron_identifier',
+    );
+$msg = sipapi_msg63($fields);
+$response = sipapi_send_message($socket, $msg);
+print_r($response);
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can download the client at the &lt;a href=&quot;http://github.com/bricestacey/php-sip&quot;&gt;PHP-SIP github repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Code is not fool-proof, but it works. Comments and collaborators welcome.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Items on Reserves with Suppressed Bib or MFHD Records</title>
+   <link href="http://tom.preston-werner.com/2009/10/19/Items-on-Reserves-with-Suppressed-Bib-or-MFHD-Records.html"/>
+   <updated>2009-10-19T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/10/19/Items-on-Reserves-with-Suppressed-Bib-or-MFHD-Records</id>
+   <content type="html">&lt;h1&gt;Items on Reserves with Suppressed Bib or MFHD Records&lt;/h1&gt;
+
+&lt;p&gt;Generated a report today of all items on reserve with a suppressed bibliographic or MFHD record. You're in luck if you're a MS Access person because I used it to generate the SQL. However, all my SQL needs to be in Oracle because it will be eventually be incorporated into an online reporting tool which uses an Oracle driver. Not to mention MS Access spits out jibberish.&lt;/p&gt;
+
+&lt;p&gt;This first code block is Oracle SQL:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT 
+    BIB_TEXT.TITLE
+  , RESERVE_LIST.LIST_TITLE
+  , ITEM.ON_RESERVE
+  , MFHD_MASTER.SUPPRESS_IN_OPAC
+  , BIB_MASTER.SUPPRESS_IN_OPAC
+  , MFHD_MASTER.DISPLAY_CALL_NO
+FROM 
+  ITEM INNER JOIN MFHD_ITEM USING(ITEM_ID)
+  INNER JOIN BIB_ITEM USING(ITEM_ID)
+  INNER JOIN BIB_TEXT USING(BIB_ID)
+  INNER JOIN BIB_MASTER USING(BIB_ID)
+  INNER JOIN MFHD_MASTER USING(MFHD_ID)
+  INNER JOIN RESERVE_LIST_ITEMS USING(ITEM_ID)
+  INNER JOIN RESERVE_LIST USING(RESERVE_LIST_ID)
+WHERE 
+  ITEM.ON_RESERVE='Y'
+  AND (MFHD_MASTER.SUPPRESS_IN_OPAC='Y' OR BIB_MASTER.SUPPRESS_IN_OPAC='Y')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is the MS Access SQL:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT BIB_TEXT.TITLE, RESERVE_LIST.LIST_TITLE, ITEM.ON_RESERVE, MFHD_MASTER.SUPPRESS_IN_OPAC, BIB_MASTER.SUPPRESS_IN_OPAC, MFHD_MASTER.DISPLAY_CALL_NO
+FROM (((((ITEM INNER JOIN MFHD_ITEM ON ITEM.ITEM_ID = MFHD_ITEM.ITEM_ID) INNER JOIN MFHD_MASTER ON MFHD_ITEM.MFHD_ID = MFHD_MASTER.MFHD_ID) INNER JOIN BIB_ITEM ON ITEM.ITEM_ID = BIB_ITEM.ITEM_ID) INNER JOIN BIB_TEXT ON BIB_ITEM.BIB_ID = BIB_TEXT.BIB_ID) INNER JOIN (RESERVE_LIST INNER JOIN RESERVE_LIST_ITEMS ON RESERVE_LIST.RESERVE_LIST_ID = RESERVE_LIST_ITEMS.RESERVE_LIST_ID) ON ITEM.ITEM_ID = RESERVE_LIST_ITEMS.ITEM_ID) INNER JOIN BIB_MASTER ON BIB_ITEM.BIB_ID = BIB_MASTER.BIB_ID
+WHERE (((ITEM.ON_RESERVE)='Y') AND ((MFHD_MASTER.SUPPRESS_IN_OPAC)='Y')) OR (((ITEM.ON_RESERVE)='Y') AND ((BIB_MASTER.SUPPRESS_IN_OPAC)='Y'));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Enjoy.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Batch Modifying Voyager ILS Patron Database</title>
+   <link href="http://tom.preston-werner.com/2009/10/15/Batch-Modifying-Voyager-ILS-Patron-Database.html"/>
+   <updated>2009-10-15T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/10/15/Batch-Modifying-Voyager-ILS-Patron-Database</id>
+   <content type="html">&lt;h1&gt;Batch Modifying Voyager ILS Patron Database&lt;/h1&gt;
+
+&lt;p&gt;I'm going through our patron database and cleaning up old data that we no longer need in response to the new data protection laws being passed in Massachusetts. Ideally, if I wanted to ensure that we stored no social securities, I'd simply write the following SQL statement:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;UPDATE patron SET ssan = '';
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I don't have write access to our database, so I'm not sure that is possible. Instead I perform the following steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Export the entire patron database&lt;/li&gt;
+&lt;li&gt;Process the patron file&lt;/li&gt;
+&lt;li&gt;Update the patron database using the modified file&lt;/li&gt;
+&lt;/ol&gt;
+
+
+&lt;h2&gt;Exporting the Patron Database&lt;/h2&gt;
+
+&lt;p&gt;The only options I ever consider are -m (monitor the process every time this many records are processed) and -r (only process this many records). I want the whole database and I want to be notified every 1000 records.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Pptrnextr -m 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Processing the Patron SIF with sed&lt;/h2&gt;
+
+&lt;p&gt;Each line in the patron SIF represents a single patron. Sed is a non-interactive text editor that processes files line by line. We can use it and regular expressions to find the ssn and remove it. The SSN is at offset 269. It's max length is 11 characters so we replace it with 11 blanks. We will redirect the output of the command into a file. Assuming the original patron SIF is called sif.pxtr and we want it to be saved as sif.pxtr.modified:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sed -nr &quot;s/^(.{268})(.{11})/\1           /p&quot; sif.pxtr &amp;gt; sif.pxtr.modified
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Updating Our Changes to the Voyager Database&lt;/h2&gt;
+
+&lt;p&gt;This is just our usual patron update process. We'll use our sif.pxtr.modified file and identify patrons using the institution_id.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Pptrnupdt -p sif.pxtr.modified -i I -o I -m 1000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It's a pretty hellish process. If you know better, please let me know.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Checking Your Library Account in Drupal</title>
+   <link href="http://tom.preston-werner.com/2009/10/01/Checking-Your-Library-Account-in-Drupal.html"/>
+   <updated>2009-10-01T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/10/01/Checking-Your-Library-Account-in-Drupal</id>
+   <content type="html">&lt;h1&gt;Checking Your Library Account in Drupal&lt;/h1&gt;
+
+&lt;p&gt;Project Homepage: &lt;a href=&quot;http://github.com/bricestacey/circ&quot;&gt;http://githuhb.com/bricestacey/circ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I developed an application that allows patrons to view their library account in Drupal. The module itself does not actually generate user data. Instead, it relies on other modules to call its hooks to generate user data. In this way, the module can be expanded to support any given system a library implements. At this moment, I have written modules for Voyager and ILLiad.&lt;/p&gt;
+
+&lt;p&gt;The patron's library account is broken into three categories: Charged Items, Outstanding Requests, and Fines. I think rather than detailing each feature, a picture is worth a thousand words. More screenshots at the bottom.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/images/myaccount.png&quot;&gt;&lt;img width=525 height=687 src=&quot;/images/myaccount.png&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Features&lt;/h2&gt;
+
+&lt;p&gt;The module is designed to be fully customizable and generalize to suit just about any need.&lt;/p&gt;
+
+&lt;h3&gt;Item Categories&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Charged Items (checked out books, received ILL articles)&lt;/li&gt;
+&lt;li&gt;Outstanding Requests (holds, ILL requests)&lt;/li&gt;
+&lt;li&gt;Fines&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Item Statuses with customizable colors and notes&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Courtesy, almost due (customizable interval)&lt;/li&gt;
+&lt;li&gt;Overdue&lt;/li&gt;
+&lt;li&gt;Lost (customizable interval)&lt;/li&gt;
+&lt;li&gt;Recalled&lt;/li&gt;
+&lt;li&gt;Available (requests only)&lt;/li&gt;
+&lt;li&gt;Unavailable (requests only)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Item Types&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Custom icons&lt;/li&gt;
+&lt;li&gt;Set custom default icon&lt;/li&gt;
+&lt;li&gt;Automatically import item types from Voyager to ease installation process&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Fully Customizable&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Date format&lt;/li&gt;
+&lt;li&gt;Category headings and descriptive text&lt;/li&gt;
+&lt;li&gt;Empty text for each category&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Simple and Easy to Use&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Fully customizable using admin interface&lt;/li&gt;
+&lt;li&gt;No need to modify PHP or CSS files&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h3&gt;Item Renewals&lt;/h3&gt;
+
+&lt;p&gt;Renewals are possible so long as the implementing system provides a path for renewals. To renew the items in our ILS, I implemented a SIP client written in PHP and provided a path for renewals. More documentation to come.&lt;/p&gt;
+
+&lt;h3&gt;Project Home&lt;/h3&gt;
+
+&lt;p&gt;D.O application process was cumbersome and too stringent for the current state of the project. Also, I just started using git and I'm impressed. &lt;a href=&quot;http://www.youtube.com/watch?v=4XpnKHJAok8&quot;&gt;Linus Torvald won me over in this talk&lt;/a&gt;. Thus, I will be hosting the &lt;a href=&quot;http://github.com/bricestacey/circ&quot;&gt;circ project on github&lt;/a&gt;. If you are interested, please take a look and provide some feedback.&lt;/p&gt;
+
+&lt;p&gt;I would be interested to know if anyone wanted to help participate or support the project. Leave a comment below.&lt;/p&gt;
+
+&lt;p&gt;Project Homepage: &lt;a href=&quot;http://github.com/bricestacey/circ&quot;&gt;http://githuhb.com/bricestacey/circ&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Generating Rapid Holdings from Voyager ILS</title>
+   <link href="http://tom.preston-werner.com/2009/09/23/Generating-Rapid-Holdings-from-Voyager-ILS.html"/>
+   <updated>2009-09-23T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/09/23/Generating-Rapid-Holdings-from-Voyager-ILS</id>
+   <content type="html">&lt;h1&gt;Generating Rapid Holdings from Voyager ILS&lt;/h1&gt;
+
+&lt;p&gt;We recently updated our Rapid holdings. I've never done that before and the procedure was undocumented. Someone from Oklahoma State University was kind enough to share their procedure, which was a series of MS Access queries that were broken up to permit large resultsets. Lucky for me, we have a relatively small collection so I rewrote it in Oracle SQL and as a single query.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT
+    BIB_TEXT.TITLE_BRIEF AS TITLE
+  , BIB_TEXT.ISSN
+  , MFHD_ITEM.ITEM_ENUM as HLDGS
+  , MFHD_ITEM.CHRON as Second866
+  , LOCATION.LOCATION_CODE
+  , BIB_TEXT.NETWORK_NUMBER
+  , MFHD_MASTER.DISPLAY_CALL_NO
+FROM
+  BIB_MASTER
+  INNER JOIN BIB_TEXT USING(BIB_ID)
+  INNER JOIN BIB_MFHD USING(BIB_ID)
+  INNER JOIN MFHD_MASTER USING(MFHD_ID)
+  INNER JOIN LOCATION USING(LOCATION_ID)
+  INNER JOIN MFHD_ITEM USING(MFHD_ID)
+WHERE
+  BIB_MASTER.SUPPRESS_IN_OPAC='N' AND
+  MFHD_MASTER.SUPPRESS_IN_OPAC='N' AND
+  BIB_TEXT.BIB_FORMAT Like '%s' AND
+  BIB_TEXT.ISSN is not null AND
+  (LOCATION.LOCATION_CODE Like 'PERIODICAL' OR
+   LOCATION.LOCATION_CODE Like 'ARCHIVES' OR
+   LOCATION.LOCATION_CODE Like 'CURPER' OR
+   LOCATION.LOCATION_CODE Like 'CURRPER' OR
+   LOCATION.LOCATION_CODE Like 'CURREF' OR
+   LOCATION.LOCATION_CODE Like 'CURRREF' OR
+   LOCATION.LOCATION_CODE Like 'CURSTA' OR
+   LOCATION.LOCATION_CODE Like 'CURRSTA' OR
+   LOCATION.LOCATION_CODE Like 'MAINSTA' OR
+   LOCATION.LOCATION_CODE Like 'MICROFICHE' OR
+   LOCATION.LOCATION_CODE Like 'MICROFILM' OR
+   LOCATION.LOCATION_CODE Like 'OVERSIZE' OR
+   LOCATION.LOCATION_CODE Like 'MICROREF' OR
+   LOCATION.LOCATION_CODE Like 'REFERENCE' OR
+   LOCATION.LOCATION_CODE Like 'SPECCOLL' OR
+   LOCATION.LOCATION_CODE Like 'WWW'
+  )
+ORDER BY
+  ISSN ASC
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I run this through a short Java program I wrote. It uses JDBC and Oracle's thin driver to execute the SQL statement and returns the result as a comma-delimited file using the CSVWriter from &lt;a href=&quot;http://sourceforge.net/projects/javacsv/&quot;&gt;Java CSV Library&lt;/a&gt;. The above SQL will work with any Oracle driver, but will require slight modification to run under MS-Access.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Single Sign-On Authentication Using EZProxy UserObjects</title>
+   <link href="http://tom.preston-werner.com/2009/07/21/Single-Sign-On-Authentication-Using-EZProxy-UserObjects.html"/>
+   <updated>2009-07-21T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/07/21/Single-Sign-On-Authentication-Using-EZProxy-UserObjects</id>
+   <content type="html">&lt;h1&gt;Single Sign-On Authentication Using EZProxy UserObjects&lt;/h1&gt;
+
+&lt;p&gt;Spurred by OCLC's development for WorldCat Local, version 5.1c of EZProxy introduced a new feature called UserObjects. Think of UserObjects as an entity that represents an active session within EZProxy. With some initial configurations and a carefully crafted URL, any 3rd party service can use EZProxy as a means of authentication whereby a library could potentially use EZProxy as a single sign-on service for all library products.&lt;/p&gt;
+
+&lt;h2&gt;Setting Up EZProxy's config.txt&lt;/h2&gt;
+
+&lt;p&gt;First and foremost, a couple settings must be made in the config.txt file. To enable UserObjects, include the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Option UserObject
+Option UserObjectTestMode
+LocalWSKey JHjkh234jkh423jkh423jkhjk423hjk423hjkh423jkhK23JHK423JKH4JK23HJK423HJK423HJK423H
+RedirectSafe ezproxy.example.com
+RedirectSafe www.example.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The UserObject option enables UserObjects. By default, EZProxy does not provide an interface to easily see the contents of a UserObject. By enabling UserObjectTestMode, you can visit http://ezproxy.example.com/userObject?service=getToken to login and see the UserObject for current user. Once you're done testing, you can remove this, but other steps must be completed first (see: writing a 3rd party application to process EZProxy UserObjects).&lt;/p&gt;
+
+&lt;p&gt;The WSKey is a secret key and will be required by 3rd parties to retrieve the actual contents of a given UserObject. More on that later.&lt;/p&gt;
+
+&lt;p&gt;You will need to set a RedirectSafe for each hostname that EZProxy automatically redirects users to. You must include the hostname of your EZProxy instance and you will need to include the hostname of the site using EZProxy to authenticate.&lt;/p&gt;
+
+&lt;h2&gt;Setting Up EZProxy's user.txt&lt;/h2&gt;
+
+&lt;p&gt;You also need to modify your user.txt file to populate the &lt;em&gt;session&lt;/em&gt; namespace with data to appear in the UserObject. There are many ways to do this depending on your authentication scheme. I have already outlined in detail how I configured the user.txt for UMass Boston using &lt;a href=&quot;/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator.html&quot;&gt;SIP&lt;/a&gt;. OCLC also has some &lt;a href=&quot;http://wcn.oclc.org/index.php/EZProxy_Configuration_for_use_with_Navigator&quot; title=&quot;&quot;&gt;documentation&lt;/a&gt; included in their wiki on WorldCat Navigator.&lt;/p&gt;
+
+&lt;p&gt;If you don't already have an authentication scheme configured that populates the session namespace, I suggest using the following for test purposes (copied from OCLC):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;If login:user eq &quot;BXL01PAT&quot; &amp;amp;&amp;amp; login:pass eq &quot;patron&quot; {
+   Set session:uid=&quot;BXL01PAT&quot;
+   Set session:forename=&quot;Patron&quot;
+   Set session:surname=&quot;Boston College Law Library&quot;
+   Set session:emailAddress=patron@college.edu
+   Set session:location=&quot;BXL&quot;
+   Set session:category=PATRO
+   Set session:joinDate=06-09-2009
+   Set session:expiryDate=06-09-2010
+   Set session:bannedInRemoteCirculation=&quot;N&quot;
+   Accept
+   Stop
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The provided variables would appear in the UserObject for the user &lt;code&gt;BXL01PAT&lt;/code&gt; with a password of &lt;code&gt;patron&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Writing URLs to Use EZProxy as a point of Authentication&lt;/h2&gt;
+
+&lt;p&gt;First and foremost, any application wishing to use EZProxy UserObjects as a method of authentication will need to be configured to support them. In almost all cases, a custom application will need to be written. I don't know of anyone supporting EZProxy natively, nor anyone really trying to do anything similar.&lt;/p&gt;
+
+&lt;p&gt;First, you must create a URL to initiate authentication. The URL looks like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;https://login.ezproxy.example.com/login?renew=true&amp;amp;amp;url=https://login.ezproxy.example.com/userObject?service=getToken&amp;amp;amp;returnURL=http://www.example.com/ezproxy.php
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The URL contains the following parameters:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;renew (optional) - If this parameter exists, EZProxy will require the user to login again regardless of an existing session. If this parameter does not exist, EZProxy will reuse an existing session (stored via a cookie). Let me emphasize it again, you cannot disable disable this by setting the value to 0, false, null, or any other value that represent a disabled state. You must simply omit it as a parameter.&lt;/li&gt;
+&lt;li&gt;url (required) - This should be set to https://login.ezproxy.example.com/userObject?service=getToken where ezproxy.example.com is your EZProxy istance. In my case, our EZProxy SSL Certificate is a wildcard for .ezproxy.example.com. Therefore, it's important that I include the subdomain login in order to prevent browser warnings.&lt;/li&gt;
+&lt;li&gt;returnURL - This the URL where the user will be redirected if authentication is successful. The UserObject ticket hash is passed to this page via a &lt;code&gt;ticket&lt;/code&gt; URL parameter. This page should contain logic to store the ticket, retrieve UserObject data via EZProxy's REST API, and perform necessary operations to validate the user for the given application.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h2&gt;Accessing UserObject Data via EZProxy's REST API&lt;/h2&gt;
+
+&lt;p&gt;EZProxy provides a secure REST API to access a UserObject's data. You'll notice that I am using the same wskey included in my config.txt I mentioned earlier. This is important, otherwise EZProxy will deny your request. cURL by default fails if it receives any browser warnings. To avoid this, I turn off CURLOPT_SSL_VERIFYPEER.&lt;/p&gt;
+
+&lt;p&gt;This script simply retrieves the UserObject and prints it on the screen.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$wskey&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;JHjkh234jkh423jkh423jkhjk423hjk423hjkh423jkhK23JHK423JKH4JK23HJK423HJK423HJK423H&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;token&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;amp;service=getUserObject&amp;amp;wskey=&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$wskey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;curl_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;curl_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CURLOPT_SSL_VERIFYPEER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;curl_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CURLOPT_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;curl_setopt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CURLOPT_RETURNTRANSFER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+  &lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;curl_exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;curl_close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$o&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;If you were writing an actual authentication extension to an existing product, I would need to use whatever APIs that application provided to create a valid session and populate it with data from the UserObject. This is nothing novel and is exactly the same process required when writing for instance an LDAP extension to an existing product.&lt;/p&gt;
+
+&lt;h2&gt;So What's the Big Idea?&lt;/h2&gt;
+
+&lt;p&gt;EZProxy is already a powerful tool for libraries. It's a simple tool for allowing off-campus users access to licensed materials. With UserObjects, EZProxy becomes even more powerful and creates the opportunity of using EZProxy as a single sign-on for all library products. This would dramatically simplify the user experience of a library's electronic services which are often fragmented.&lt;/p&gt;
+
+&lt;p&gt;My future plans include supporting EZProxy authentication in Drupal and ILLiad. If you are interested in helping with development, please let me know. I'd love to chat.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Free Wildcard SSL Certificates for .edu Domains</title>
+   <link href="http://tom.preston-werner.com/2009/07/15/Free-Wildcard-SSL-Certificates-for-.edu-Domains.html"/>
+   <updated>2009-07-15T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/07/15/Free-Wildcard-SSL-Certificates-for-.edu-Domains</id>
+   <content type="html">&lt;h1&gt;Free Wildcard SSL Certificates for .edu Domains&lt;/h1&gt;
+
+&lt;p&gt;A decade ago, SSL certificates were a thing for e-commerce sites, not libraries. Today, requirements that include SSL certs are popping up just about everywhere from securing login screens to passing around UserObjects from EZProxy with 3rd party vendors (OCLC).&lt;/p&gt;
+
+&lt;p&gt;We've tottered along in the past using self-signed certificates. This was easy, convenient, and cheap, but annoying for our patrons. For the paranoid user, browser warnings about self-signed ceritificates can be ominous. And as a student, there is nothing less professional than paying thousands of dollars to attend a research institution that can't even get a legitimate SSL certificate for their online applications that handle their private, personal data.&lt;/p&gt;
+
+&lt;h2&gt;ipsCA&lt;/h2&gt;
+
+&lt;p&gt;This is not an endorsement. There are no referral links, in fact no links at all.&lt;/p&gt;
+
+&lt;p&gt;ipsCA provides free wildcard SSL certs to .edu domains. No credit card information is required. The registration process is entirely automated and uses email addresseses found in the WHOIS directory to confirm your identity, so it may be a good idea to warn your domain administrators in advance.&lt;/p&gt;
+
+&lt;p&gt;When you get your certificate (it took me about a day). You'll get the actual certificate, a root certificate, and an intermediate. How these certs are installed is dependent on your webserver.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Blocking BBCode from Appearing in Drupal Webform Submissions</title>
+   <link href="http://tom.preston-werner.com/2009/07/14/Blocking-BBCode-from-Appearing-in-Drupal-Webform-Submissions.html"/>
+   <updated>2009-07-14T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/07/14/Blocking-BBCode-from-Appearing-in-Drupal-Webform-Submissions</id>
+   <content type="html">&lt;h1&gt;Blocking BBCode from Appearing in Drupal Webform Submissions&lt;/h1&gt;
+
+&lt;p&gt;We use Drupal as the content manager for the Healey Library website. For our contact forms, we use the &lt;a href=&quot;http://drupal.org/project/webform&quot;&gt;Webform Contributed Module&lt;/a&gt;. We have gotten a lot of spam recently from bots that include BBCode in their submissions. Since we do not use BBCode on our site, I've taken the liberty of blocking all submissions that contain any BBCode. I've used the &lt;a href=&quot;http://en.wikipedia.org/wiki/BBCode&quot;&gt;list of BBCode&lt;/a&gt; found on Wikipedia as a guide. Ever since, we no longer get any spam.&lt;/p&gt;
+
+&lt;p&gt;When you edit a Webform, there is a collapsible fieldset called &lt;em&gt;Webform advanced settings&lt;/em&gt;. In the textarea labeled &lt;em&gt;Additional Validation&lt;/em&gt; I include the following code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+  foreach ($form_values['submitted'] as $field) {
+    if (preg_match('/(\[url\]|\[url=([^\]]*)\]|\[\/url\]|\[link\]|\[link=([^\]]*)\]|\[\/link\]|\[b\]|\[\/b\]|\[i\]|\[\/i\]|\[u\]|\[\/u\]|\[s\]|\[\/s\]|\[img\]|\[\/img\]|\[quote\]|\[\/quote\]|\[code\]|\[\/code\]|\[size\]|\[\/size\]|\[color=([^\]]*)\]|\[\/color\]|\[table\]|\[\/table\]|\[tr\]|\[\/tr\]|\[td\]|\[\/td\])/', $field)) {
+      form_set_error('', 'BBCode is not permitted. Please remove any BBCode from your submission and try again.');
+    }
+  }
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The code iterates through the $field array, checking if any of its values contains BBCode. If it does, the form throws an error. If not, nothing happens.&lt;/p&gt;
+
+&lt;p&gt;If anyone has any questions or suggestions for improvement, please let me know.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Properly Parsing Last Name from EZProxy Authentication via SIP</title>
+   <link href="http://tom.preston-werner.com/2009/07/02/Properly-Parsing-Last-Name-from-EZProxy-Authentication-via-SIP.html"/>
+   <updated>2009-07-02T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/07/02/Properly-Parsing-Last-Name-from-EZProxy-Authentication-via-SIP</id>
+   <content type="html">&lt;h1&gt;Properly Parsing Last Name from EZProxy Authentication via SIP&lt;/h1&gt;
+
+&lt;p&gt;We authenticate users by their library barcode and their last name. Our &lt;a href=&quot;/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator.html&quot;&gt;EZProxy user authentication&lt;/a&gt; uses &lt;a href=&quot;/2009/04/27/Voyager-Self-Check-selfchk.html&quot;&gt;SIP&lt;/a&gt; to determine if a given user is valid or not. Unfortunately, Voyager's implementation of SIP does not return a patron's last name as a discrete variable. Instead, it returns the patron's full name as a single string.&lt;/p&gt;
+
+&lt;p&gt;At first, we didn't have any problems. EZProxy provides a function &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/expressions/&quot;&gt;ParseName()&lt;/a&gt; that will split a given name into its parts. We used a check that looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Set ParseName(auth:AE, &quot;FMS&quot;, &quot;login&quot;)
+If Upper(login:pass) ne Upper(login:surname) {
+  Deny loginbu.htm
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This works as expected for most users, however users with a last name that contained a space and did not have a middle initial were being denied. For these users, the first word in their last name was being parsed as their middle initial. As a temporary fix, I just gave the user a middle initial. But there's more you can do.&lt;/p&gt;
+
+&lt;p&gt;The simple solution is to concatenate the middle and last names prior to the check and use the &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/expressions/&quot;&gt;AnyWild()&lt;/a&gt; function to be sure the given password is found in the concatenated string. This looks like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Set ParseName(auth:AE, &quot;FMS&quot;, &quot;login&quot;)
+Set passCheck = login:middleName . login:surname
+If !AnyWild(passCheck, &quot;*&quot; . login:pass) {
+  Deny loginbu.htm
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This appears to work, but isn't exactly secure. A patron only requires to provide at minimum the last character of their last name. They could of course add more characters. As an example, my last name is Stacey. I could log in using the following passwords: &lt;code&gt;y&lt;/code&gt;, &lt;code&gt;ey&lt;/code&gt;, &lt;code&gt;cey&lt;/code&gt;, &lt;code&gt;acey&lt;/code&gt;, &lt;code&gt;tacey&lt;/code&gt;, or &lt;code&gt;stacey&lt;/code&gt;. I could even keep going to include my middle initial. This opens a security risk, a user need only try all 26 letters and would have access to millions of dollars of licensed materials. I don't care, but I'm sure EBSCO does. Luckily, we can do better.&lt;/p&gt;
+
+&lt;p&gt;We tighten the check by also ensuring that the provided password &lt;em&gt;at the very least&lt;/em&gt; matches the last name determined by the &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/expressions/&quot;&gt;ParseName()&lt;/a&gt; function. That looks like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Set ParseName(auth:AE, &quot;FMS&quot;, &quot;login&quot;)
+Set passCheck = login:middleName . login:surname
+If !AnyWild(login:pass, &quot;*&quot; . login:surname) || !AnyWild(passCheck, &quot;*&quot; . login:pass) {
+  Deny loginbu.htm
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At UMass Boston, we actually go one step further. We have had issues in the past concerning users with hyphens, spaces, and even apostrophes in last names. I do not know what was the limiting technology (whether it was EZProxy or how the data was queried from MS Access at the time), but we could not include these characters and they were replaced by spaces. This was very confusing for users to remember so I had written a javascript function that converted these characters for users on form submission. Now, EZProxy can do this for us. We simply eliminate all non letter characters like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Set ParseName(auth:AE, &quot;FMS&quot;, &quot;login&quot;)
+Set pass = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:pass)
+Set lastCheck = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:surname)
+Set passCheck = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:middleName . login:surname)
+If !AnyWild(pass, &quot;*&quot; . lastCheck) || !AnyWild(passCheck, &quot;*&quot; . pass) {
+  Deny loginbu.htm
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, a patron with a space in their last name must enter &lt;em&gt;at least&lt;/em&gt; all but the first word in their last name, but may also include that first word. This has the added &quot;feature&quot; that users with a single word for their last name may include their middle name as well. Most importantly, more users are logging in without any problems.&lt;/p&gt;
+
+&lt;p&gt;User experience +1&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;*August 15, 2009* I've since used Faux PatronAPI to pull names from Voyager instead of relying on SIP.&lt;/strong&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Patrons with Multiple Active Barcodes</title>
+   <link href="http://tom.preston-werner.com/2009/06/16/Patrons-with-Multiple-Active-Barcodes.html"/>
+   <updated>2009-06-16T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/06/16/Patrons-with-Multiple-Active-Barcodes</id>
+   <content type="html">&lt;h1&gt;Patrons with Multiple Active Barcodes&lt;/h1&gt;
+
+&lt;p&gt;We are working to auto-populate users into our ILLiad system with active patrons in our ILS. We will be using patron barcodes as usernames. Before beginning this process, it's important that each user only has one active barcode. Otherwise, those users would have multiple ILLiad accounts.&lt;/p&gt;
+
+&lt;p&gt;Here is the SQL used to retrieve those users:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;select 
+  b1.patron_barcode, b2.patron_barcode
+from
+  patron_barcode b1, 
+  patron_barcode b2, 
+  patron p
+where
+  b1.patron_id = p.patron_id and
+  b2.patron_id = p.patron_id and
+  b1.patron_barcode_id &amp;lt; b2.patron_barcode_id and
+  b1.patron_barcode is not null and
+  b2.patron_barcode is not null and
+  b1.barcode_status = 1 and
+  b2.barcode_status = 1 and
+  p.expire_date &amp;gt;= current_date;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Tracking the Number of New Barcodes Issued</title>
+   <link href="http://tom.preston-werner.com/2009/06/08/Tracking-the-Number-of-New-Barcodes-Issued.html"/>
+   <updated>2009-06-08T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/06/08/Tracking-the-Number-of-New-Barcodes-Issued</id>
+   <content type="html">&lt;h1&gt;Tracking the Number of New Barcodes Issued&lt;/h1&gt;
+
+&lt;p&gt;One of our Circulation Department's annual metric is the number of newly issued barcodes. Unfortunately, Voyager does not store the creation date of its barcodes. Instead, it keeps track of the date it was modified. Thus, there is no way to determine the number of new barcodes issued between two arbitrary dates.&lt;/p&gt;
+
+&lt;p&gt;However, if you were to take a snapshot of every barcode on one day and then take another snapshot of every barcode on another day, the barcodes that  appear in the newest snapshot but not in the older snapshot are determined new within that time frame. The problem with this approach is that date ranges cannot be arbitrarily chosen and must be selected from the dates, in fact the exact moments of time at which the data was collected.&lt;/p&gt;
+
+&lt;h2&gt;Taking a Snapshot of Every Barcode&lt;/h2&gt;
+
+&lt;p&gt;Here is the SQL query used to take a snapshot of every barcode. Setting feedback to 'off' will prevent sqlplus from displaying the number of rows selected. We also set the pagesize to 0 so that headers are not displayed and repeated throughout the file. Both of these changes will make parsing the results easier.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set feedback off
+set pagesize 0
+select patron_barcode from patron_barcode where patron_barcode is not null;
+exit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Rather than having to manually log into sqlplus and run the sql, this can be executed from the command line. The -S argument executes the command in silent mode, which removes most of the fluff output leaving only the query results.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sqlplus -S username/password @allBarcodes.sql
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Most likely, you'll want to redirect the output to a file and perhaps make a cron job out of it. You might be able to do it all on a single line, but it would be difficult to manage. For some reason I had to set ORACLE_HOME because whichever shell is used for cronjobs doesn't have it. This value will be different depending on your OS and version of Oracle. Here's my shell script:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;LOGDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;LOGFILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;log.barcodes.&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;date &lt;span class=&quot;s2&quot;&gt;&amp;quot;+%Y%m%d.%H%M&amp;quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;DBUSER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;scott
+&lt;span class=&quot;nv&quot;&gt;DBPASS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;tiger
+&lt;span class=&quot;nv&quot;&gt;SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;allBarcodes.sql
+&lt;span class=&quot;nv&quot;&gt;ORACLE_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/oracle/app/oracle/product/10.2.0/db_1
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;ORACLE_HOME
+&lt;span class=&quot;nv&quot;&gt;SID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VGER
+
+&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ORACLE_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/bin/sqlplus -S &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DBUSER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DBPASS&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;@&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SID&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; @&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SQL&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;gt; &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LOGDIR&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LOGFILE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;p&gt;You can then set a cronjob on an hourly, daily, weekly, or monthly basis:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Hourly
+01 * * * * /export/home/voyager/barcodeSnapshot.sh
+# Daily
+01 4 * * * /export/home/voyager/barcodeSnapshot.sh
+# Weekly
+01 4 * * 0 /export/home/voyager/barcodeSnapshot.sh
+# Monthly
+01 4 1 * * /export/home/voyager/barcodeSnapshot.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Comparing Barcode Snapshots for New Barcodes&lt;/h2&gt;
+
+&lt;p&gt;Next, we need a script to compare the snapshots and return the number of barcodes in the newer file that do not appear in the older file. This part will not be automated as the input files must be changed within the source. It's not big deal because I usually only need to determine this number once a year. If counts on an hourly basis were required, I would definitely automate this.&lt;/p&gt;
+
+&lt;p&gt;I'll call this newBarcodeReport.php and run it from the command line with &lt;code&gt;php -f newBarcodeReport.php&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// F1 MUST BE THE OLDER LOGFILE&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$f1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;log.barcodes.20090606.0000&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// F2 MUST BE THE NEWER LOGFILE&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$f2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;log.barcodes.20090608.1643&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$old&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$new&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fopen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$f1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;feof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;fgets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$old&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;fclose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fopen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$f2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;feof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;trim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;fgets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$buffer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;fclose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$results&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;array_diff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$old&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$results&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;h2&gt;Number of Modified Barcodes Grouped By Patron Group and Barcode Status&lt;/h2&gt;
+
+&lt;p&gt;If all that is too much work, you can always fall back on the number of modified barcodes within a specified time period grouped by patron group and barcode status. Whoa, these reports have long names. This data does not accurately reflect the number of new barcodes (e.g. to track outreach success). However, it is an indicator of staff workload required to track patron barcodes. Here is the SQL for that:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PATRON_GROUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATRON_GROUP_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PATRON_BARCODE_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_DESC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;LEFT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;JOIN&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_GROUP&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATRON_GROUP_ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_GROUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATRON_GROUP_ID&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;LEFT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;JOIN&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE_STATUS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_TYPE&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;WHERE&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;IS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_DATE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;06-01-2008 00:00:00&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;MM-DD-YYYY HH24:MI:SS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AND&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_DATE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to_date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;05-31-2009 00:00:00&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;MM-DD-YYYY HH24:MI:SS&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;GROUP&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_GROUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATRON_GROUP_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_DESC&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ORDER&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_GROUP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PATRON_GROUP_NAME&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PATRON_BARCODE_STATUS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BARCODE_STATUS_DESC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Nested If/Else Statements Produce Unexpected Behavior using EZproxy 5.1c</title>
+   <link href="http://tom.preston-werner.com/2009/06/06/Nested-If-Else-Statements-Produce-Unexpected-Behavior-using-EZproxy-5.1c.html"/>
+   <updated>2009-06-06T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/06/06/Nested-If-Else-Statements-Produce-Unexpected-Behavior-using-EZproxy-5.1c</id>
+   <content type="html">&lt;h1&gt;Nested If/Else Statements Produce Unexpected Behavior using EZproxy 5.1c&lt;/h1&gt;
+
+&lt;p&gt;I was touching up our EZproxy user authentication and I ran into a problem using If/Else clauses. Essentially, If/Else clauses do not nest properly. Here is an example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;::Common
+if (0 == 1) {
+  msg &quot;0 == 1 TRUE&quot;
+  if (1 == 1) {
+    msg &quot;Inner IF&quot;
+  } else {
+    msg &quot;Inner ELSE&quot;
+  }
+} else {
+  msg &quot;1 == 1 FALSE&quot;
+}
+/Common
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once executed, I would expect &quot;1 == 1 FALSE&quot; to be output. Here is what I get:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;Inner ELSE&quot;
+&quot;1 == 1 FALSE&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I don't exactly know what is going on. From my experiences writing programs that parse highly generic text structures (exercises 1-23 and 1-24 from the K&amp;amp;R come to mind), I'd just like with wish the debugger good luck. And for any developer out there wishing to write your own language and interpreter to embed in your product, don't do it. Instead, use an existing language with all its libraries removed.&lt;/p&gt;
+
+&lt;p&gt;Luckily, this can be avoided by rewriting nested If/Else statements as two If statements, one true and the other false. Here is an example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;::Common
+if (0 == 1) {
+  msg &quot;0 == 1 TRUE&quot;
+  if (1 == 1) {
+    msg &quot;Inner IF&quot;
+  }
+  if (1 != 1) {
+    msg &quot;Inner ELSE&quot;
+  }
+} else {
+  msg &quot;1 == 1 FALSE&quot;
+}
+/Common
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This gives the appropriate output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;1 == 1 FALSE&quot;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Configure EZProxy to Authenticate Against Voyager ILS for WorldCat Local / Navigator</title>
+   <link href="http://tom.preston-werner.com/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator.html"/>
+   <updated>2009-06-03T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/06/03/Configure-EZProxy-to-Authenticate-Against-Voyager-ILS-for-WorldCat-Local-Navigator</id>
+   <content type="html">&lt;h1&gt;Configure EZProxy to Authenticate Against Voyager ILS for WorldCat Local / Navigator&lt;/h1&gt;
+
+&lt;p&gt;I just finished configuring EZProxy's user authentication for our implementation of WorldCat Navigator. EZProxy has traditionally been used to allow off-campus users access to licensed materials. However, EZProxy was recently aquired by OCLC and has been bundled into WorldCat Navigator for authentication. To do this, EZProxy was extended to generate UserObjects which contain a user's information and could be passed around like a session identifier. I'm excited for the possibilities that this may allow a single-signon (SSO) for all OCLC services such as ILLiad.&lt;/p&gt;
+
+&lt;p&gt;One of my biggest complaints against EZProxy is the lack of documentation. To improve on that, I thought I'd share my results.&lt;/p&gt;
+
+&lt;p&gt;Healey Library has been using &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/usr/file.htm&quot;&gt;text files&lt;/a&gt; ever since we began using EZProxy. That involves querying our patron database and dumping username:password pairs into a text file. We did this every hour to try and keep our systems in sync. To complicate things, the text file was generated on one machine and then FTPed to the EZProxy server. I have found this to be rather problemnatic as you might expect.&lt;/p&gt;
+
+&lt;h2&gt;Overzealous First Ideas&lt;/h2&gt;
+
+&lt;p&gt;I saw WorldCat Navigator as an opportunity to correct this. I first created the most botched workflow for authenticating people on the fly. It involved a script that would parse a single user.txt file to generate UserObjects. The trick however was that each time a person logged in, this file would first be overwritten to contain only that person's data. I published it to a listserv of 80 people prescribed the task of implementing EZProxy for their instituion. Some people liked it, some people didn't. It worked, but had some flaws for high traffic institutions.&lt;/p&gt;
+
+&lt;p&gt;An anonymous source (to which I owe a lot of thanks) by means of Jeff Greer offered up an alternative solution that used EZProxy's III authentication scheme. EZProxy's implementation of III's PatronAPI is generic enough that you can mimic the same style of output as PatronAPI and have it be parsed by EZProxy. Awesome. Since this isn't exactly Innovative Interfaces Inc.'s PatronAPI, I've taken the liberty of coining this Faux PatronAPI.&lt;/p&gt;
+
+&lt;h2&gt;Our Implentation of EZProxy's User Authentication&lt;/h2&gt;
+
+&lt;p&gt;In this whole process, I also was helping to identify how to properly form a connection with Selfchk, which implements the &lt;a href=&quot;/2009/04/27/Voyager-Self-Check-selfchk.html&quot;&gt;SIP protocol for Voyager&lt;/a&gt;. EZProxy supports &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/usr/sip.htm&quot;&gt;SIP as a means of authentication&lt;/a&gt;. So, when I discovered how to establish a connection with SIP, I started investigating how I could use it for EZProxy. I soon discovered that EZProxy's default settings append a newline '\n' at the end of each SIP statement, which is not permitted by Voyager's implementation of SIP and appropriately so (the SIP protocol clearly states that each statement should end in a carriage return '\r'). I emailed the creator of EZProxy and was told the &quot;SupressNewLine&quot; directive would fix this and it did.&lt;/p&gt;
+
+&lt;p&gt;Although Voyager's implementation of SIP is very strict with newlines, it doesn't fully implement the protocol. The SIP protocol returns patron email addresses when you send a Patron Information Request, however Voyager doesn't send this. However, SIP is very nice in that it properly returns a patron's circulation status taking into consideration all possible circulation policies, which would take mountains of effort to replicate.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, we used SIP to first authenticate users and populate most of the UserObject and Faux PatronAPI to fill in the remaining gaps (email address and epxiration date).&lt;/p&gt;
+
+&lt;p&gt;Here is a copy of our user.txt. Please note that we use EZProxy to authenticate both electronic subscriptions as well as WCL/NRE authentication.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;::SIP
+  SupressNewLine
+  Host example.com:7031
+  LoginUsername SIP_USER
+  LoginPassword SIP_PASS
+  LoginLocation SIP_LOCATION
+  SIP2
+
+  If auth:AF eq &quot;Patron barcode not found&quot; {
+   Deny loginbu.htm
+  }
+
+  Set ParseName(auth:AE, &quot;FMSX&quot;, &quot;login&quot;)
+  Set pass = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:pass)
+  Set lastCheck = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:surname)
+  Set passCheck = REReplace(&quot;/[^a-zA-Z]/g&quot;, &quot;&quot;, login:middleName . login:surname)
+  If !AnyWild(pass, &quot;*&quot; . lastCheck) || !AnyWild(passCheck, &quot;*&quot; . pass) {
+    Deny loginbu.htm
+  }
+
+  #SIP 4 (card reported lost)
+  If auth:4 eq &quot;Y&quot; {Deny loginbu.htm}
+
+  Set url = Coalesce(login:url, cookie:url)
+  If url =~ &quot;/userObject/i&quot; {
+    # This is an NRE request, only allow authorized patron groups.
+    If auth:PT !~ &quot;/(UND|GRAD|STAFF|FAC|TEST)/i&quot; {
+      Deny loginbupg.htm
+    }
+
+    Set session:groupNumber = INSERT_GROUP_NUMBER
+    Set session:instNumber = INSERT_INST_NUMBER
+    Set ParseName(auth:AE, &quot;FMS&quot;, &quot;session&quot;)
+    Set session:uid = auth:AA
+    Set session:category = auth:PT
+    If auth:0 eq &quot;N&quot; {
+      Set session:bannedInRemoteCirculation = &quot;N&quot;
+    }
+    If auth:0 eq &quot;Y&quot; {
+      Set session:bannedInRemoteCirculation = &quot;Y&quot;
+      Deny loginbudel.htm
+    }
+    # Get email and expiration date from ILS using Faux PatronAPI
+    If UserFile(&quot;user_iii.txt&quot;) {}
+
+    # NRE Auth is ended by the follow Stop. EZProxy stops here.
+    Stop
+  }
+  # Only the following patrons are allowed to access our online subscriptions
+  If auth:PT !~ &quot;/(UND|GRAD|STAFF|FAC|UMBONLINE|TEST)/i&quot; {
+    Deny loginbupg.htm
+  }
+  Accept
+/SIP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above file runs the Faux PatronAPI via the UserFile('user_iii.txt') function. Here is our user_iii.txt:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;::III
+  Host example.com:80
+  Set session:dateFormat = &quot;MM-DD-YYYY&quot;
+  Set session:expiryDate = auth:expiryDate
+  Set session:emailAddress = auth:email
+/III
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Faux PatronAPI URL Rewriting&lt;/h2&gt;
+
+&lt;p&gt;Faux PatronAPI works by making a request to http://example.com/PATRONAPI/0123456789/dump where 0123456789 is the patron's barcode. Thinking of urls as addresses to files and folders on the internet, you would have to create a folder called PATRONAPI and populate it with a folder for every barcode and populate each of those folders with a file &quot;dump&quot; that contains the necessary data. No thanks. Instead, we use mod_rewrite and rewrite the url to a php script with the barcode passed in the query string.&lt;/p&gt;
+
+&lt;p&gt;The following can be put in .htaccess or httpd.conf or one of the other million places Apache configuration directives can be placed.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;RewriteEngine on
+RewriteRule ^PATRONAPI/([a-zA-Z0-9\.]*)/dump$ /path/to/fauxpatronapi.php?barcode=$1 [L]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will redirect all requests for http://example.com/PATRONAPI/0123456789/dump to http://example.com/fauxpatronapi.php?barcode=0123456789.&lt;/p&gt;
+
+&lt;h2&gt;Writing a PHP Script to Emulate PatronAPI Formatted Output&lt;/h2&gt;
+
+&lt;p&gt;We assume now that the request has successfully been redirected to your script. The script then connects to the Voyager ILS using an Oracle database connection, queries the barcode, fetches the patron, and returns the necessary data. In our case, it only returns their email address and expiration date. The data must be returned in the format &quot;[key]=value&quot;. These values can then be accessed in EZProxy using the auth namespace, i.e. given the following response the patron's email address could be retrieved by auth:email:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[expiryDate]=02-27-10
+[email]=username@example.com
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;More information about EZProxy's III authentication scheme can be found at OCLC's &lt;a href=&quot;http://www.oclc.org/support/documentation/ezproxy/usr/iii.htm&quot;&gt;EZProxy website&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is our copy of fauxpatronapi.php:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;php&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Database configuration&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$host&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;1521&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$sid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;&amp;lt;DSN&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  (DESCRIPTION =&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    (ADDRESS_LIST =&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    )&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    (CONNECT_DATA =&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      (SID = $sid)&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    )&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  )&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;DSN;&lt;/span&gt;
+
+  &lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;htmlentities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c1&quot;&gt;// mod_rewrite has already sanitized this&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$barcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;user&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$sql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;&amp;lt;SQL&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    SELECT&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      PATRON_ADDRESS.ADDRESS_LINE1 as email, &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      PATRON.EXPIRE_DATE as expires&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    FROM &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      (PATRON INNER JOIN PATRON_BARCODE USING(PATRON_ID)) &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      LEFT JOIN PATRON_ADDRESS USING(PATRON_ID)&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    WHERE &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      UPPER(PATRON_BARCODE.PATRON_BARCODE) = UPPER(&amp;#39;$barcode&amp;#39;) AND&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      PATRON_ADDRESS.ADDRESS_TYPE = &amp;#39;3&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;SQL;&lt;/span&gt;
+
+  &lt;span class=&quot;nv&quot;&gt;$stid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$stid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;htmlentities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c1&quot;&gt;// Execute SQL query&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$stid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OCI_DEFAULT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$stid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;htmlentities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c1&quot;&gt;// Fetch result first result.&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$patron&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;oci_fetch_object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$stid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  
+  &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;[expiryDate]=&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;m-d-Y&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;strtotime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$patron&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;EXPIRES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;[email]=&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$patron&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;EMAIL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;h2&gt;Putting It All Together&lt;/h2&gt;
+
+&lt;p&gt;Once all these pieces are put  together, everthing should work. Just a quick note: Oracle drivers are not installed in php by default so if you intend to use a php script you will need to install them which can be tricky. It's not necessary that you use a PHP script and can always rewrite the url to anything you want.&lt;/p&gt;
+
+&lt;p&gt;Cheers!&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;July 14, 2009 - updated user.txt, and added user_iii.txt&lt;/li&gt;
+&lt;li&gt;July 17, 2009 - updated user.txt. Invalid usernames would succeed password check, but fail for patron group restrictions. Added check to detect this appropriately.&lt;/li&gt;
+&lt;li&gt;July 23, 2009 - Not all OCLC products support custom date formats. As such, they have requested all EZProxy dates be returned in the format MM-DD-YYYY. I've updated user_iii.php and fauxpatronapi.php to reflect these changes.&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Report the number of unique items from a location that were circulated within a date range in Voyager ILS</title>
+   <link href="http://tom.preston-werner.com/2009/05/28/Report-the-number-of-unique-items-from-a-location-that-were-circulated-within-a-date-range-in-Voyager-ILS.html"/>
+   <updated>2009-05-28T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/05/28/Report-the-number-of-unique-items-from-a-location-that-were-circulated-within-a-date-range-in-Voyager-ILS</id>
+   <content type="html">&lt;h1&gt;Report the number of unique items from a location that were circulated within a date range in Voyager ILS&lt;/h1&gt;
+
+&lt;p&gt;It's that time of year again for annual reports. Some of the numbers I'm asked to dig up aren't easily available. So, I'm writing up this short guide to make it easier for you.&lt;/p&gt;
+
+&lt;p&gt;I was recently asked for the number of unique books from our main stacks that have circulated for the past fiscal year. We use Voyager as our ILS and there are no reports that include such a value. I decided that I would have to write my own SQL query to dig it up. I will be using SQL*Plus, which is the command line tool for accessing the Oracle database. Please note that the SQL provided is not compatible with MS Access (traditional means of generating reports from Voyager). If you intend to use MS Access you will need to modify the SQL as necessary.&lt;/p&gt;
+
+&lt;h2&gt;Accessing SQL*Plus&lt;/h2&gt;
+
+&lt;p&gt;You can run SQL*Plus by typing &lt;code&gt;sqlplus&lt;/code&gt; into the command line. You will be prompted for a username and password. Once logged in, you will see a &lt;code&gt;SQL&amp;gt;&lt;/code&gt; prompt. From there you can enter any SQL statement you like. If you have a collection of SQL statements in a file, you can execute them with &lt;code&gt;@file&lt;/code&gt; where file is the name of a .sql file in your working directory (e.g. itemcounts.sql can be executed with @itemcounts). The default settings for SQL*Plus are difficult to work with. I advise issuing the following commands once logged in.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;set linesize 150
+set pagesize 50
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you don't want to type this in each time you use SQL*Plus, you can add them to &lt;em&gt;$ORACLE_HOME/sqlplus/admin/glogin.sql&lt;/em&gt;. This file may be in a different location depending on your operating system and version of Oracle (I am using SunOS 5. 9 and Oracle 10g).&lt;/p&gt;
+
+&lt;h2&gt;Determining your Item Type and Location&lt;/h2&gt;
+
+&lt;p&gt;The SQL statement will prompt you for a &lt;code&gt;start date&lt;/code&gt;, &lt;code&gt;end date&lt;/code&gt;, &lt;code&gt;item type&lt;/code&gt; and &lt;code&gt;location code&lt;/code&gt;. The dates should be given in the format YYYYMMDD (i.e. May 28, 2009 would be 20090528). If you have trouble determining a particular code, you can view them all in the Voyager System Administration module under &lt;em&gt;System -&gt; Locations&lt;/em&gt; or &lt;em&gt;System -&gt; Item Types&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2&gt;The SQL Statement&lt;/h2&gt;
+
+&lt;p&gt;Circulation transactions are spread out between two tables: Circ_Transactions and Circ_Trans_Archive. This query finds the count of distinct item_id's from each table given an item type and location. The results are then combined by a union and summed to provide the final result.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT SUM(count) FROM
+-- Circ_Transactions
+(SELECT Count(Distinct(t.Item_ID)) count
+FROM Circ_Transactions t, Item i
+WHERE t.Item_ID = i.Item_ID AND
+  -- Start Date
+  t.Charge_Date &amp;gt;= to_date('&amp;amp;&amp;amp;START_DATE_YYYYMMDD 00:00:00', 'YYYYMMDD HH24:MI:SS') AND
+  -- End Date
+  t.Charge_Date &amp;lt;= to_date('&amp;amp;&amp;amp;END_DATE_YYYYMMDD 23:59:59', 'YYYYMMDD HH24:MI:SS') AND
+  -- Item Type. Subquery converts given code to id.
+  ((i.Temp_Item_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;amp;&amp;amp;ITEM_TYPE_CODE'))) OR (i.Temp_Item_Type_ID = 0 AND i.Ite
+m_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;amp;&amp;amp;ITEM_TYPE_CODE')))) AND -- Item Type
+  -- Location. Subquery converts given code to id.
+  ((i.Temp_Location = (SELECT Location_ID FROM Location WHERE upper(Location_Code) = upper('&amp;amp;&amp;amp;LOCATION_CODE'))) OR
+   (i.Temp_Location = 0 AND i.Perm_Location = (SELECT Location_ID FROM location WHERE upper(Location_Code) = upper('&amp;amp;&amp;amp;LOCATION_CODE'))))
+UNION
+-- Circ_Trans_Archive
+SELECT Count(Distinct(t.Item_ID)) count
+FROM Circ_Trans_Archive t, Item i
+WHERE t.Item_ID = i.Item_ID AND
+  -- Start Date
+  t.Charge_Date &amp;gt;= to_date('&amp;amp;&amp;amp;START_DATE_YYYYMMDD 00:00:00', 'YYYYMMDD HH24:MI:SS') AND
+  -- End Date
+  t.Charge_Date &amp;lt;= to_date('&amp;amp;&amp;amp;END_DATE_YYYYMMDD 23:59:59', 'YYYYMMDD HH24:MI:SS') AND
+  -- Item Type. Subquery converts given code to id.
+  ((i.Temp_Item_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;amp;&amp;amp;ITEM_TYPE_CODE'))) OR (i.Temp_Item_Type_ID = 0 AND i.Ite
+m_Type_ID = (SELECT Item_Type_ID FROM Item_Type WHERE upper(Item_Type_Code) = upper('&amp;amp;&amp;amp;ITEM_TYPE_CODE')))) AND -- Item Type
+  -- Location. Subquery converts given code to id.
+  ((i.Temp_Location = (SELECT Location_ID FROM Location WHERE upper(Location_Code) = upper('&amp;amp;&amp;amp;LOCATION_CODE'))) OR
+   (i.Temp_Location = 0 AND i.Perm_Location = (SELECT Location_ID FROM location WHERE upper(Location_Code) = upper('&amp;amp;&amp;amp;LOCATION_CODE')))));
+  UNDEF LOCATION_CODE;
+  UNDEF ITEM_TYPE_CODE;
+  UNDEF START_DATE_YYYYMMDD;
+  UNDEF END_DATE_YYYYMMDD;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Cheers!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Voyager Self Check (selfchk)</title>
+   <link href="http://tom.preston-werner.com/2009/04/27/Voyager-Self-Check-selfchk.html"/>
+   <updated>2009-04-27T00:00:00-04:00</updated>
+   <id>http://tom.preston-werner.com/2009/04/27/Voyager-Self-Check-selfchk</id>
+   <content type="html">&lt;h1&gt;Voyager Self Check (selfchk)&lt;/h1&gt;
+
+&lt;p&gt;My workplace, the Joseph P. Healey Library, uses Ex Libris' Voyager ILS. The normal interface for the Circulation module is through a graphical user interface (GUI), which I believe is of great use for staff to circulate materials. It makes it convenient for a human to perform complicated tasks. However, what if I were developing an application that performs Circulation tasks (charge, renew, discharge, collect fees, etc) and wanted to perform those tasks programmatically?&lt;/p&gt;
+
+&lt;p&gt;Luckily, Voyager has an additional module called SIP Self Check, sometimes referred to as selfchk, which allows one to programmatically interface with the Circulation module.&lt;/p&gt;
+
+&lt;h2&gt;Standard Interchange Protocol (SIP)&lt;/h2&gt;
+
+&lt;p&gt;SIP Self Check implements 3M's Standard Interchange Protocol (SIP). The protocol describes a set of message pairs that form the dialogue between server and client. For each command issued by the client, it will receive its corresponding response. My understanding is that SIP was designed with automated circulation systems in mind. You know the self-checkout at your local grocery store? Imagine that in a library. SIP would be the messages flying from the self-checkout machines to the ILS' circulation server.&lt;/p&gt;
+
+&lt;p&gt;However, my limited exposure to SIP has been exclusively in the domain of resource sharing. For example, the Healey Library is a member of both the Boston Library Consortium Virtual Catalog and Massachusetts Virtual Catalog. Both virtual catalogs are implementations of SyrsiDynix's URSA resource-sharing solution, which allows patrons to borrow books from any of the member libraries within each catalog. The catalogs use SIP to hook into each library system to determine an item's availability and to place a hold on the item. At that point the automation is over and staff must retrieve and process the book as usual. We are actually in the process of replacing the BLC Virtual Catalog with WorldCat Navigator, another resource-sharing solution that supports additional protocols such as NICP or INN-Reach, which will allow for greater participation among libraries which may not support SIP.&lt;/p&gt;
+
+&lt;h2&gt;Why I Want a Programmable Interface&lt;/h2&gt;
+
+&lt;p&gt;If you're like me, you're probably a member of dozens of networks and online services, but I'm sure you spend most of your time in only just a few. So take for instance when you need to renew a library book. There is often a large amount of friction to leave GMail, Facebook, Twitter, Hacker News, World of Warcraft or wherever you spend your time and venture into a rarely used service. What can we do to reduce this friction? Develop tools that can be deployed within these other, more favored networks.&lt;/p&gt;
+
+&lt;p&gt;The important takeaway is that SIP (and other protocols) essentially allows a machine to perform just about any task the gal at the circulation desk is doing, but instantaneously, from anywhere, through any imaginable interface. If that doesn't tickle your fantasies, here are some examples:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Portable barcode scanners that connect wirelessly to the internet that can charge or discharge books from anywhere in real-time. Staff that are stuck standing at the same terminal with the same truck of books would rejoice in the greater freedom.&lt;/li&gt;
+&lt;li&gt;Libraries could mimic Apple's retail stores and allow circulation staff to roam freely. This may be popular for locations where having an entire desktop is difficult.&lt;/li&gt;
+&lt;li&gt;Automatic entrance gates with card swipes that open only if you're an active patron.&lt;/li&gt;
+&lt;li&gt;View your account status, renew items, and place holds via phone, sms, facebook, twitter, or any other platform a developer can work with. Yeah, I said twitter! Just tweet &quot;@HealeyLibrary renew:987654321&quot; and you've got the book for another two weeks!&lt;/li&gt;
+&lt;li&gt;Services that allow for a 3rd party to authenticate users (e.g. that support authentication via LDAP, POP, IMAP, etc) could develop support for SIP, allowing real-time access to your ILS's patron database.&lt;/li&gt;
+&lt;li&gt;Pay fines and fees online securely with a credit card, Paypal, a community time bank, or even Second Life's Linden Dollars.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;And that's just the tip of the iceberg.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>

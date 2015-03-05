@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Patrons with Multiple Active Barcodes</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Patrons with Multiple Active Barcodes</h1>
+
+<p>We are working to auto-populate users into our ILLiad system with active patrons in our ILS. We will be using patron barcodes as usernames. Before beginning this process, it's important that each user only has one active barcode. Otherwise, those users would have multiple ILLiad accounts.</p>
+
+<p>Here is the SQL used to retrieve those users:</p>
+
+<pre><code>select 
+  b1.patron_barcode, b2.patron_barcode
+from
+  patron_barcode b1, 
+  patron_barcode b2, 
+  patron p
+where
+  b1.patron_id = p.patron_id and
+  b2.patron_id = p.patron_id and
+  b1.patron_barcode_id &lt; b2.patron_barcode_id and
+  b1.patron_barcode is not null and
+  b2.patron_barcode is not null and
+  b1.barcode_status = 1 and
+  b2.barcode_status = 1 and
+  p.expire_date &gt;= current_date;
+</code></pre>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

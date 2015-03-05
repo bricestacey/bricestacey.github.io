@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Configure EZProxy to Authenticate Against Voyager ILS for WorldCat Local / Navigator</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Configure EZProxy to Authenticate Against Voyager ILS for WorldCat Local / Navigator</h1>
+
+<p>I just finished configuring EZProxy's user authentication for our implementation of WorldCat Navigator. EZProxy has traditionally been used to allow off-campus users access to licensed materials. However, EZProxy was recently aquired by OCLC and has been bundled into WorldCat Navigator for authentication. To do this, EZProxy was extended to generate UserObjects which contain a user's information and could be passed around like a session identifier. I'm excited for the possibilities that this may allow a single-signon (SSO) for all OCLC services such as ILLiad.</p>
+
+<p>One of my biggest complaints against EZProxy is the lack of documentation. To improve on that, I thought I'd share my results.</p>
+
+<p>Healey Library has been using <a href="http://www.oclc.org/support/documentation/ezproxy/usr/file.htm">text files</a> ever since we began using EZProxy. That involves querying our patron database and dumping username:password pairs into a text file. We did this every hour to try and keep our systems in sync. To complicate things, the text file was generated on one machine and then FTPed to the EZProxy server. I have found this to be rather problemnatic as you might expect.</p>
+
+<h2>Overzealous First Ideas</h2>
+
+<p>I saw WorldCat Navigator as an opportunity to correct this. I first created the most botched workflow for authenticating people on the fly. It involved a script that would parse a single user.txt file to generate UserObjects. The trick however was that each time a person logged in, this file would first be overwritten to contain only that person's data. I published it to a listserv of 80 people prescribed the task of implementing EZProxy for their instituion. Some people liked it, some people didn't. It worked, but had some flaws for high traffic institutions.</p>
+
+<p>An anonymous source (to which I owe a lot of thanks) by means of Jeff Greer offered up an alternative solution that used EZProxy's III authentication scheme. EZProxy's implementation of III's PatronAPI is generic enough that you can mimic the same style of output as PatronAPI and have it be parsed by EZProxy. Awesome. Since this isn't exactly Innovative Interfaces Inc.'s PatronAPI, I've taken the liberty of coining this Faux PatronAPI.</p>
+
+<h2>Our Implentation of EZProxy's User Authentication</h2>
+
+<p>In this whole process, I also was helping to identify how to properly form a connection with Selfchk, which implements the <a href="/2009/04/27/Voyager-Self-Check-selfchk.html">SIP protocol for Voyager</a>. EZProxy supports <a href="http://www.oclc.org/support/documentation/ezproxy/usr/sip.htm">SIP as a means of authentication</a>. So, when I discovered how to establish a connection with SIP, I started investigating how I could use it for EZProxy. I soon discovered that EZProxy's default settings append a newline '\n' at the end of each SIP statement, which is not permitted by Voyager's implementation of SIP and appropriately so (the SIP protocol clearly states that each statement should end in a carriage return '\r'). I emailed the creator of EZProxy and was told the "SupressNewLine" directive would fix this and it did.</p>
+
+<p>Although Voyager's implementation of SIP is very strict with newlines, it doesn't fully implement the protocol. The SIP protocol returns patron email addresses when you send a Patron Information Request, however Voyager doesn't send this. However, SIP is very nice in that it properly returns a patron's circulation status taking into consideration all possible circulation policies, which would take mountains of effort to replicate.</p>
+
+<p>Ultimately, we used SIP to first authenticate users and populate most of the UserObject and Faux PatronAPI to fill in the remaining gaps (email address and epxiration date).</p>
+
+<p>Here is a copy of our user.txt. Please note that we use EZProxy to authenticate both electronic subscriptions as well as WCL/NRE authentication.</p>
+
+<pre><code>::SIP
+  SupressNewLine
+  Host example.com:7031
+  LoginUsername SIP_USER
+  LoginPassword SIP_PASS
+  LoginLocation SIP_LOCATION
+  SIP2
+
+  If auth:AF eq "Patron barcode not found" {
+   Deny loginbu.htm
+  }
+
+  Set ParseName(auth:AE, "FMSX", "login")
+  Set pass = REReplace("/[^a-zA-Z]/g", "", login:pass)
+  Set lastCheck = REReplace("/[^a-zA-Z]/g", "", login:surname)
+  Set passCheck = REReplace("/[^a-zA-Z]/g", "", login:middleName . login:surname)
+  If !AnyWild(pass, "*" . lastCheck) || !AnyWild(passCheck, "*" . pass) {
+    Deny loginbu.htm
+  }
+
+  #SIP 4 (card reported lost)
+  If auth:4 eq "Y" {Deny loginbu.htm}
+
+  Set url = Coalesce(login:url, cookie:url)
+  If url =~ "/userObject/i" {
+    # This is an NRE request, only allow authorized patron groups.
+    If auth:PT !~ "/(UND|GRAD|STAFF|FAC|TEST)/i" {
+      Deny loginbupg.htm
+    }
+
+    Set session:groupNumber = INSERT_GROUP_NUMBER
+    Set session:instNumber = INSERT_INST_NUMBER
+    Set ParseName(auth:AE, "FMS", "session")
+    Set session:uid = auth:AA
+    Set session:category = auth:PT
+    If auth:0 eq "N" {
+      Set session:bannedInRemoteCirculation = "N"
+    }
+    If auth:0 eq "Y" {
+      Set session:bannedInRemoteCirculation = "Y"
+      Deny loginbudel.htm
+    }
+    # Get email and expiration date from ILS using Faux PatronAPI
+    If UserFile("user_iii.txt") {}
+
+    # NRE Auth is ended by the follow Stop. EZProxy stops here.
+    Stop
+  }
+  # Only the following patrons are allowed to access our online subscriptions
+  If auth:PT !~ "/(UND|GRAD|STAFF|FAC|UMBONLINE|TEST)/i" {
+    Deny loginbupg.htm
+  }
+  Accept
+/SIP
+</code></pre>
+
+<p>The above file runs the Faux PatronAPI via the UserFile('user_iii.txt') function. Here is our user_iii.txt:</p>
+
+<pre><code>::III
+  Host example.com:80
+  Set session:dateFormat = "MM-DD-YYYY"
+  Set session:expiryDate = auth:expiryDate
+  Set session:emailAddress = auth:email
+/III
+</code></pre>
+
+<h2>Faux PatronAPI URL Rewriting</h2>
+
+<p>Faux PatronAPI works by making a request to http://example.com/PATRONAPI/0123456789/dump where 0123456789 is the patron's barcode. Thinking of urls as addresses to files and folders on the internet, you would have to create a folder called PATRONAPI and populate it with a folder for every barcode and populate each of those folders with a file "dump" that contains the necessary data. No thanks. Instead, we use mod_rewrite and rewrite the url to a php script with the barcode passed in the query string.</p>
+
+<p>The following can be put in .htaccess or httpd.conf or one of the other million places Apache configuration directives can be placed.</p>
+
+<pre><code>RewriteEngine on
+RewriteRule ^PATRONAPI/([a-zA-Z0-9\.]*)/dump$ /path/to/fauxpatronapi.php?barcode=$1 [L]
+</code></pre>
+
+<p>This will redirect all requests for http://example.com/PATRONAPI/0123456789/dump to http://example.com/fauxpatronapi.php?barcode=0123456789.</p>
+
+<h2>Writing a PHP Script to Emulate PatronAPI Formatted Output</h2>
+
+<p>We assume now that the request has successfully been redirected to your script. The script then connects to the Voyager ILS using an Oracle database connection, queries the barcode, fetches the patron, and returns the necessary data. In our case, it only returns their email address and expiration date. The data must be returned in the format "[key]=value". These values can then be accessed in EZProxy using the auth namespace, i.e. given the following response the patron's email address could be retrieved by auth:email:</p>
+
+<pre><code>[expiryDate]=02-27-10
+[email]=username@example.com
+</code></pre>
+
+<p>More information about EZProxy's III authentication scheme can be found at OCLC's <a href="http://www.oclc.org/support/documentation/ezproxy/usr/iii.htm">EZProxy website</a>.</p>
+
+<p>Here is our copy of fauxpatronapi.php:</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span>
+  <span class="c1">// Database configuration</span>
+  <span class="nv">$username</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="nv">$password</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="nv">$host</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="nv">$port</span> <span class="o">=</span> <span class="s1">&#39;1521&#39;</span><span class="p">;</span>
+  <span class="nv">$sid</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+
+<span class="nv">$dsn</span> <span class="o">=</span> <span class="s">&lt;&lt;&lt;DSN</span>
+<span class="s">  (DESCRIPTION =</span>
+<span class="s">    (ADDRESS_LIST =</span>
+<span class="s">      (ADDRESS = (PROTOCOL = TCP)(HOST = $host)(PORT = $port))</span>
+<span class="s">    )</span>
+<span class="s">    (CONNECT_DATA =</span>
+<span class="s">      (SID = $sid)</span>
+<span class="s">    )</span>
+<span class="s">  )</span>
+<span class="s">DSN;</span>
+
+  <span class="nv">$conn</span> <span class="o">=</span> <span class="nb">oci_connect</span><span class="p">(</span><span class="nv">$username</span><span class="p">,</span> <span class="nv">$password</span><span class="p">,</span> <span class="nv">$dsn</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$e</span> <span class="o">=</span> <span class="nb">oci_error</span><span class="p">();</span>
+    <span class="k">print</span> <span class="nb">htmlentities</span><span class="p">(</span><span class="nv">$e</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]);</span>
+    <span class="k">exit</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// mod_rewrite has already sanitized this</span>
+  <span class="nv">$barcode</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">];</span>
+  <span class="nv">$sql</span> <span class="o">=</span> <span class="s">&lt;&lt;&lt;SQL</span>
+<span class="s">    SELECT</span>
+<span class="s">      PATRON_ADDRESS.ADDRESS_LINE1 as email, </span>
+<span class="s">      PATRON.EXPIRE_DATE as expires</span>
+<span class="s">    FROM </span>
+<span class="s">      (PATRON INNER JOIN PATRON_BARCODE USING(PATRON_ID)) </span>
+<span class="s">      LEFT JOIN PATRON_ADDRESS USING(PATRON_ID)</span>
+<span class="s">    WHERE </span>
+<span class="s">      UPPER(PATRON_BARCODE.PATRON_BARCODE) = UPPER(&#39;$barcode&#39;) AND</span>
+<span class="s">      PATRON_ADDRESS.ADDRESS_TYPE = &#39;3&#39;</span>
+<span class="s">SQL;</span>
+
+  <span class="nv">$stid</span> <span class="o">=</span> <span class="nb">oci_parse</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$stid</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$e</span> <span class="o">=</span> <span class="nb">oci_error</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+    <span class="k">print</span> <span class="nb">htmlentities</span><span class="p">(</span><span class="nv">$e</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]);</span>
+    <span class="k">exit</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Execute SQL query</span>
+  <span class="nv">$r</span> <span class="o">=</span> <span class="nb">oci_execute</span><span class="p">(</span><span class="nv">$stid</span><span class="p">,</span> <span class="nx">OCI_DEFAULT</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$r</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$e</span> <span class="o">=</span> <span class="nb">oci_error</span><span class="p">(</span><span class="nv">$stid</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="nb">htmlentities</span><span class="p">(</span><span class="nv">$e</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]);</span>
+    <span class="k">exit</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Fetch result first result.</span>
+  <span class="nv">$patron</span> <span class="o">=</span> <span class="nb">oci_fetch_object</span><span class="p">(</span><span class="nv">$stid</span><span class="p">);</span>
+  
+  <span class="k">echo</span> <span class="s1">&#39;[expiryDate]=&#39;</span> <span class="o">.</span> <span class="nb">date</span><span class="p">(</span><span class="s2">&quot;m-d-Y&quot;</span><span class="p">,</span> <span class="nb">strtotime</span><span class="p">(</span><span class="nv">$patron</span><span class="o">-&gt;</span><span class="na">EXPIRES</span><span class="p">))</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+  <span class="k">echo</span> <span class="s1">&#39;[email]=&#39;</span> <span class="o">.</span> <span class="nv">$patron</span><span class="o">-&gt;</span><span class="na">EMAIL</span><span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</code></pre>
+</div>
+
+
+<h2>Putting It All Together</h2>
+
+<p>Once all these pieces are put  together, everthing should work. Just a quick note: Oracle drivers are not installed in php by default so if you intend to use a php script you will need to install them which can be tricky. It's not necessary that you use a PHP script and can always rewrite the url to anything you want.</p>
+
+<p>Cheers!</p>
+
+<ul>
+<li>July 14, 2009 - updated user.txt, and added user_iii.txt</li>
+<li>July 17, 2009 - updated user.txt. Invalid usernames would succeed password check, but fail for patron group restrictions. Added check to detect this appropriately.</li>
+<li>July 23, 2009 - Not all OCLC products support custom date formats. As such, they have requested all EZProxy dates be returned in the format MM-DD-YYYY. I've updated user_iii.php and fauxpatronapi.php to reflect these changes.</li>
+</ul>
+
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

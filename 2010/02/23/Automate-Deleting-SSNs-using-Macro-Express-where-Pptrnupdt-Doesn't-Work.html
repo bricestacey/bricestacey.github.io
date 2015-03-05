@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Automate Deleting SSNs using Macro Express where Pptrnupdt Doesn't Work</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Automate Deleting SSNs using Macro Express where Pptrnupdt Doesn't Work</h1>
+
+<p>Several months ago I purged most of the social security numbers from Healey Library's patron database using Voyager's patron update (Pptrnupdt), but there were several thousand patrons remaining without institution ids. Pptrnupdt only matches patrons by social security number or by Institution ID. Therefore Pptrnupdt would not work gracefully to finish off the project. If anyone from Ex Libris is reading this, please include a Patron ID index type, thanks.</p>
+
+<p>To finally clear our the remaining SSNs, I used Macro Express. In a nutshell, it can automate tasks by performing keystrokes, mouse movement and clicks, logic using UI elements such as window title and contents, and process text files line by line among many other things. I totally recommend it. It also comes with a 30 day trial, so you can do a couple large batch projects before having to pay.</p>
+
+<p>Voyager has a keyboard shortcut for just about everything and even when there is not one, some combination of keystrokes will get you wherever you need to be. Thus, I present a script that processes barcodes from barcodes.txt on my desktop, looks up the patron, edits the patron, removes the SSN field, saves the patron, and moves on to the next. You can copy paste this into the Direct Editor.</p>
+
+<pre><code>&lt;SPKEY:0050&gt;&lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\barcodes.txt&gt;&lt;TEXTTYPE:&lt;ALTD&gt;&lt;ALTU&gt;p&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;a&lt;ALTU&gt;&gt;&lt;TEXTTYPE:%T1%&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;IMSD:500&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;p&lt;ALTU&gt;e&gt;&lt;TEXTTYPE:&lt;ALTD&gt;s&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;DELETE&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;v&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;o&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;&gt;&lt;BTFEND&gt;
+</code></pre>
+
+<p>Once pasted into the Direct Editor, you can select the Scripting Editor to get a more user-friendly view of your script. There, you can add, remove, disable, or modify commands. Here is what this script would look like in the Scripting Editor and I've annotated it for better understanding.</p>
+
+<ul>
+<li><strong>Keystroke Speed</strong>: 50 Milliseconds (any faster and my system trips over itself)</li>
+<li><strong>Text File Begin Process</strong>: "barcodes.txt" (will need to modify this to point to your file. Also, I've chosen to save each line in variable T1)</li>
+<li><strong>Text Type</strong>: <ALTD><ALTU>p<ENTER> (menu: Patron > Search for Patron...)</li>
+<li><strong>Text Type</strong>: <ALTD>a<ALTU> (select barcode search index)</li>
+<li><strong>Text Type</strong>: %T1% (current barcode that is being processed from barcodes.txt)</li>
+<li><strong>Text Type</strong>: <ENTER> (search)</li>
+<li><strong>Delay 500 Milliseconds</strong>: in case there are duplicate barcodes, this gives your system enough time to popup the list of patrons to select from</li>
+<li><strong>Text Type</strong>: <ENTER> (If there was only one patron with this barcode, this does nothing. Otherwise, it selects the first person from the list. You can insert a ARROW DOWN if you want to select the second)</li>
+<li><strong>Text Type</strong>: <ALTD>p<ALTU>e (menu: Patron > Edit Patron...)</li>
+<li><strong>Text Type</strong>: <ALTD>s<ALTU> (select the SSN field)</li>
+<li><strong>Text Type</strong>: <DELETE> (selecting the SSN field selects its entire contents, so delete will clear the whole field)</li>
+<li><strong>Text Type</strong>: <ALTD>v<ALTU> (Save)</li>
+<li><strong>Text Type</strong>: <ALTD>o<ALTU> (Ok - closes the Edit Patron window)</li>
+<li><strong>Text Type</strong>: <ESC><ESC><ESC> (just in case we got stuck somewhere. This will close the Edit Patron window and cancel any activate menu items.)</li>
+<li><strong>Text File End Process</strong></li>
+</ul>
+
+
+<p>The script expects you to start with the Patron window open. You can easily get there by clicking the Patron button and pressing ESC to get out of the Patron Search dialog box. It doesn't matter that a particular might be open. As you'll see when the script loops, that's precisely its state.</p>
+
+<h2>Other Scripts</h2>
+
+<p>Here are some other macros I used to clean out some others lying about:</p>
+
+<p>Delete SSNs using SSN search index.</p>
+
+<pre><code>&lt;SPKEY:0050&gt;&lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\ssn.txt&gt;&lt;TEXTTYPE:&lt;ALTD&gt;&lt;ALTU&gt;p&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;n&lt;ALTU&gt;&gt;&lt;TEXTTYPE:%T1%&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;IDELAY:1&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;p&lt;ALTU&gt;e&gt;&lt;TEXTTYPE:&lt;ALTD&gt;s&lt;ALTU&gt;&lt;DELETE&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;v&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;o&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;&gt;&lt;BTFEND&gt;
+</code></pre>
+
+<p>Delete SSNs using Institution ID search index.</p>
+
+<pre><code>&lt;SPKEY:0050&gt;&lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\iid.txt&gt;&lt;TEXTTYPE:&lt;ALTD&gt;&lt;ALTU&gt;p&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;d&lt;ALTU&gt;&gt;&lt;TEXTTYPE:%T1%&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;IMSD:500&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;p&lt;ALTU&gt;e&gt;&lt;TEXTTYPE:&lt;ALTD&gt;s&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;DELETE&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;v&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;o&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;&gt;&lt;BTFEND&gt;
+</code></pre>
+
+<p>Delete SSNs using First Name and Last Name search index. This one is most complicated as I had to parse the first 20 characters (first name) of each line into a variable and the next 30 characters (last name) into another. Both variables were also trimmed to eliminate whitespace.</p>
+
+<pre><code>&lt;SPKEY:0050&gt;&lt;BTFBEG:001:000001:000000:C:\Documents and Settings\brice\Desktop\names.txt&gt;&lt;TMVAR2:10:02:01:001:020:&gt;&lt;TMVAR2:01:02:00:000:000:&gt;&lt;TMVAR2:10:03:01:021:030:&gt;&lt;TMVAR2:01:03:00:000:000:&gt;&lt;TEXTTYPE:&lt;ALTD&gt;&lt;ALTU&gt;p&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;e&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;l&lt;ALTU&gt;%T3%&gt;&lt;TEXTTYPE:&lt;ALTD&gt;i&lt;ALTU&gt;%T2%&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;IMSD:500&gt;&lt;TEXTTYPE:&lt;ENTER&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;p&lt;ALTU&gt;e&gt;&lt;TEXTTYPE:&lt;ALTD&gt;s&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;DELETE&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;v&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ALTD&gt;o&lt;ALTU&gt;&gt;&lt;TEXTTYPE:&lt;ESC&gt;&lt;ESC&gt;&lt;ESC&gt;&gt;&lt;BTFEND&gt;
+</code></pre>
+
+<p>If you've got any ideas for other macros, leave me a comment.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

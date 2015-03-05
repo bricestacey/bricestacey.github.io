@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>MFHD Delete</title>
+   <meta name="author" content="Brice Stacey" />
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Brice Stacey</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>MFHD Delete</h1>
+
+<p>We accidentally created 70,000 mfhds in Voyager and needed to delete them. Using Voyager's webadmin this would be a tedious task. First, we'd need to export an interleaved MARC file of bibs and mfhds and then import it with some weird settings in order to just delete the mfhds. It's ridiculous.  Luckily, Voyager ships with an API named BatchCat.dll, which allows you to write software to add, modify, and delete records from the catalog.</p>
+
+<p>Using BatchCat, we can simply connect to Voyager and say, "Delete this mfhd," and it just works. Wonderful. Anyway, this is the code I used to ultimately delete the mfhds. It reads an input file with one mfhd id on each line and deletes it and goes to the next. It does not attempt to delete any items attached to the mfhd. It also runs super fast (approximately 50,000 in 2.5 hours)</p>
+
+<p>This is my first crack at C#. I hate it and have no desire to learn it, so please forgive any mistakes or clumsiness in the code.</p>
+
+<script src="https://gist.github.com/720635.js?file=BatchCat.cs"></script>
+
+
+<p>Thanks to Paul Hoffman's <a href="http://documents.el-una.org/491/">Robocat</a>, which helped me figure out the basics of C#.</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>25 Aug 2011</span> &raquo; <a href="/2011/08/25/ruby-zoom-port-to-1.9.2.html">ruby-zoom port to 1.9.2</a></li>
+    
+      <li><span>06 May 2011</span> &raquo; <a href="/2011/05/06/recover-deleted-items-in-voyager.html">Recover Deleted Items in Voyager</a></li>
+    
+      <li><span>11 Apr 2011</span> &raquo; <a href="/2011/04/11/Nostos.html">Nostos</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Brice Stacey<br />
+        bricestacey@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/bricestacey/">github.com/bricestacey</a><br />
+        <a href="http://twitter.com/bricestacey/">twitter.com/bricestacey</a><br />
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
